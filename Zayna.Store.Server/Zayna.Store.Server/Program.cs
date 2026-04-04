@@ -31,6 +31,14 @@ builder.Services.AddAuthenticationJwtBearer(s =>
     s.SigningKey = builder.Configuration["JwtSettings:SigningKey"] ?? "MyLongSecretForSigningJwtTokens";
 });
 
+// Configure JWT to use the "role" claim for roles
+builder.Services.Configure<Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions>(
+    Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+    options =>
+    {
+        options.TokenValidationParameters.RoleClaimType = "role";
+    });
+
 builder.Services.AddAuthorization();
 builder.Services.AddFastEndpoints()
     .SwaggerDocument(o =>
