@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using FastEndpoints.Security;
 using Microsoft.IdentityModel.Tokens;
 using Zayna.Store.Server.Entities;
 
@@ -30,24 +31,14 @@ public class TokenService
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
-
-        foreach (var role in roles)
+        
+        return JwtBearer.CreateToken(o =>
         {
-            claims.Add(new Claim("role", role));
-        }
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _configuration["JwtSettings:Issuer"] ?? "ZaynaStore",
-            audience: _configuration["JwtSettings:Audience"] ?? "ZaynaStoreClient",
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
-            signingCredentials: credentials
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            o.SigningKey = signingKey;
+            o.ExpireAt = DateTime.UtcNow.AddMinutes(expiryMinutes);
+            o.User.Roles.AddRange(roles);
+            o.User.Claims.AddRange(claims);
+        });
     }
 
     public string GenerateRefreshToken()
