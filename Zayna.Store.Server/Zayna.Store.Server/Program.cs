@@ -31,12 +31,15 @@ builder.Services.AddAuthenticationJwtBearer(s =>
     s.SigningKey = builder.Configuration["JwtSettings:SigningKey"] ?? "MyLongSecretForSigningJwtTokens";
 });
 
-// Configure JWT to use the "role" claim for roles
-builder.Services.Configure<Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions>(
+// Configure JWT Bearer validation parameters
+builder.Services.PostConfigure<Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions>(
     Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
     options =>
     {
-        options.TokenValidationParameters.RoleClaimType = "role";
+        options.TokenValidationParameters.ValidateIssuer = true;
+        options.TokenValidationParameters.ValidateAudience = true;
+        options.TokenValidationParameters.ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "ZaynaStore";
+        options.TokenValidationParameters.ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? "ZaynaStoreClient";
     });
 
 builder.Services.AddAuthorization();

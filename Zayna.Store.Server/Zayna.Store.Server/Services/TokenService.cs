@@ -23,6 +23,9 @@ public class TokenService
         var expiryMinutes = _configuration.GetValue<int>("JwtSettings:AccessTokenExpiryMinutes");
         if (expiryMinutes == 0) expiryMinutes = 30;
 
+        var issuer = _configuration["JwtSettings:Issuer"] ?? "ZaynaStore";
+        var audience = _configuration["JwtSettings:Audience"] ?? "ZaynaStoreClient";
+
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id),
@@ -31,11 +34,13 @@ public class TokenService
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
-        
+
         return JwtBearer.CreateToken(o =>
         {
             o.SigningKey = signingKey;
             o.ExpireAt = DateTime.UtcNow.AddMinutes(expiryMinutes);
+            o.Issuer = issuer;
+            o.Audience = audience;
             o.User.Roles.AddRange(roles);
             o.User.Claims.AddRange(claims);
         });
