@@ -2,14 +2,14 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Customers;
+namespace Zayna.Store.Server.Features.Admin.Users.Admins;
 
-public class GetCustomerByIdRequest
+public class GetAdminByIdRequest
 {
     public string Id { get; set; } = string.Empty;
 }
 
-public class GetCustomerByIdResponse
+public class GetAdminByIdResponse
 {
     public string Id { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -20,22 +20,32 @@ public class GetCustomerByIdResponse
     public DateTime CreatedAt { get; set; }
 }
 
-public class GetCustomerByIdEndpoint : Endpoint<GetCustomerByIdRequest, GetCustomerByIdResponse>
+public class GetAdminByIdEndpoint : Endpoint<GetAdminByIdRequest, GetAdminByIdResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public GetCustomerByIdEndpoint(UserManager<ApplicationUser> userManager)
+    public GetAdminByIdEndpoint(UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
     }
 
     public override void Configure()
     {
-        Get("/users/customers/{id}");
+        Get("/admin/users/admins/{id}");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Retrieves an administrator user by ID";
+            s.Description = "Returns detailed information about a specific administrator user. Only accessible by administrators.";
+            s.Response<GetAdminByIdResponse>(StatusCodes.Status200OK, "Admin details retrieved successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status404NotFound, "Admin not found");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
-    public override async Task HandleAsync(GetCustomerByIdRequest req, CancellationToken ct)
+    public override async Task HandleAsync(GetAdminByIdRequest req, CancellationToken ct)
     {
         var user = await _userManager.FindByIdAsync(req.Id);
 
@@ -45,15 +55,15 @@ public class GetCustomerByIdEndpoint : Endpoint<GetCustomerByIdRequest, GetCusto
             return;
         }
 
-        // Check if user is a customer
+        // Check if user is an admin
         var roles = await _userManager.GetRolesAsync(user);
-        if (!roles.Contains(UserRoles.Customer))
+        if (!roles.Contains(UserRoles.Admin))
         {
             await Send.NotFoundAsync(ct);
             return;
         }
 
-        await Send.OkAsync(new GetCustomerByIdResponse
+        await Send.OkAsync(new GetAdminByIdResponse
         {
             Id = user.Id,
             Email = user.Email!,

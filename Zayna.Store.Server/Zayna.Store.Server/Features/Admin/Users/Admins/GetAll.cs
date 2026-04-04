@@ -2,7 +2,7 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Admins;
+namespace Zayna.Store.Server.Features.Admin.Users.Admins;
 
 public class GetAllAdminsResponse
 {
@@ -31,8 +31,17 @@ public class GetAllAdminsEndpoint : EndpointWithoutRequest<GetAllAdminsResponse>
 
     public override void Configure()
     {
-        Get("/users/admins");
+        Get("/admin/users/admins");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Retrieves all administrator users";
+            s.Description = "Returns a list of all users with the Admin role. Only accessible by administrators.";
+            s.Response<GetAllAdminsResponse>(StatusCodes.Status200OK, "List of admins retrieved successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

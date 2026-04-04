@@ -2,7 +2,7 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Admins;
+namespace Zayna.Store.Server.Features.Admin.Users.Admins;
 
 public class DeleteAdminRequest
 {
@@ -20,8 +20,19 @@ public class DeleteAdminEndpoint : Endpoint<DeleteAdminRequest>
 
     public override void Configure()
     {
-        Delete("/users/admins/{id}");
+        Delete("/admin/users/admins/{id}");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Soft deletes an administrator user";
+            s.Description = "Marks an administrator user as deleted without permanently removing the record. Only accessible by administrators.";
+            s.Response(StatusCodes.Status204NoContent, "Admin deleted successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or user is not an admin");
+            s.Response<ProblemDetails>(StatusCodes.Status404NotFound, "Admin not found");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
     public override async Task HandleAsync(DeleteAdminRequest req, CancellationToken ct)

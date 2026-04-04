@@ -16,6 +16,7 @@ public class StoreDbContext: IdentityDbContext<ApplicationUser>
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -96,6 +97,21 @@ public class StoreDbContext: IdentityDbContext<ApplicationUser>
             entity.HasIndex(rt => rt.UserId);
             entity.HasIndex(rt => rt.ExpiryDate);
             entity.HasIndex(rt => new { rt.UserId, rt.IsRevoked });
+        });
+
+        // ProductImage configuration
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.HasKey(pi => pi.Id);
+            entity.Property(pi => pi.ImageUrl).IsRequired().HasMaxLength(500);
+
+            entity.HasOne(pi => pi.Product)
+                .WithMany(p => p.Images)
+                .HasForeignKey(pi => pi.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(pi => pi.ProductId);
+            entity.HasIndex(pi => pi.IsMain);
         });
     }
 }

@@ -2,7 +2,7 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Customers;
+namespace Zayna.Store.Server.Features.Admin.Users.Customers;
 
 public class DeleteCustomerRequest
 {
@@ -20,8 +20,19 @@ public class DeleteCustomerEndpoint : Endpoint<DeleteCustomerRequest>
 
     public override void Configure()
     {
-        Delete("/users/customers/{id}");
+        Delete("/admin/users/customers/{id}");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Soft deletes a customer user";
+            s.Description = "Marks a customer user as deleted without permanently removing the record. Only accessible by administrators.";
+            s.Response(StatusCodes.Status204NoContent, "Customer deleted successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or user is not a customer");
+            s.Response<ProblemDetails>(StatusCodes.Status404NotFound, "Customer not found");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
     public override async Task HandleAsync(DeleteCustomerRequest req, CancellationToken ct)

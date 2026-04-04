@@ -69,6 +69,15 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     {
         Post("/auth/login");
         AllowAnonymous();
+
+        Summary(s =>
+        {
+            s.Summary = "Authenticates a user and returns JWT tokens";
+            s.Description = "Validates user credentials and returns an access token (30 minutes) and refresh token (15 days) along with user information and roles. Publicly accessible.";
+            s.Response<LoginResponse>(StatusCodes.Status200OK, "Login successful, tokens returned");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or validation errors");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Invalid email or password");
+        });
     }
 
     public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
@@ -78,8 +87,6 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
         if (user == null)
         {
             await Send.UnauthorizedAsync(ct);
-            AddError("Invalid email or password");
-            await Send.ErrorsAsync(cancellation: ct);
             return;
         }
 
@@ -88,8 +95,6 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
         if (!isPasswordValid)
         {
             await Send.UnauthorizedAsync(ct);
-            AddError("Invalid email or password");
-            await Send.ErrorsAsync(cancellation: ct);
             return;
         }
 
@@ -102,7 +107,10 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 
         // Get refresh token expiry from configuration
         var refreshTokenExpiryDays = _configuration.GetValue<int>("JwtSettings:RefreshTokenExpiryDays");
-        if (refreshTokenExpiryDays == 0) refreshTokenExpiryDays = 15;
+        if (refreshTokenExpiryDays == 0)
+        {
+            refreshTokenExpiryDays = 15;
+        }
 
         // Save refresh token to database
         var refreshTokenEntity = new RefreshToken

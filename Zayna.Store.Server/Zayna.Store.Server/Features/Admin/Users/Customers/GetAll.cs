@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Customers;
+namespace Zayna.Store.Server.Features.Admin.Users.Customers;
 
 public class GetAllCustomersResponse
 {
@@ -32,8 +32,17 @@ public class GetAllCustomersEndpoint : EndpointWithoutRequest<GetAllCustomersRes
 
     public override void Configure()
     {
-        Get("/users/customers");
+        Get("/admin/users/customers");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Retrieves all customer users";
+            s.Description = "Returns a list of all users with the Customer role. Only accessible by administrators.";
+            s.Response<GetAllCustomersResponse>(StatusCodes.Status200OK, "List of customers retrieved successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

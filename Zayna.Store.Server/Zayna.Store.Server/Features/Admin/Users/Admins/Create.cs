@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Admins;
+namespace Zayna.Store.Server.Features.Admin.Users.Admins;
 
 public class CreateAdminRequest
 {
@@ -62,8 +62,18 @@ public class CreateAdminEndpoint : Endpoint<CreateAdminRequest, CreateAdminRespo
 
     public override void Configure()
     {
-        Post("/users/admins");
+        Post("/admin/users/admins");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Creates a new administrator user account";
+            s.Description = "Creates a new user with the provided details and assigns the Admin role. Only accessible by existing administrators.";
+            s.Response<CreateAdminResponse>(StatusCodes.Status200OK, "Admin created successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or validation errors");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
     public override async Task HandleAsync(CreateAdminRequest req, CancellationToken ct)

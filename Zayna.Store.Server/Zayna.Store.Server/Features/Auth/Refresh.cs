@@ -53,6 +53,15 @@ public class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, RefreshTokenRe
     {
         Post("/auth/refresh");
         AllowAnonymous();
+
+        Summary(s =>
+        {
+            s.Summary = "Refreshes an expired access token";
+            s.Description = "Exchanges a valid refresh token for a new access token and refresh token. The old refresh token is revoked (single-use). Publicly accessible.";
+            s.Response<RefreshTokenResponse>(StatusCodes.Status200OK, "Token refreshed successfully, new tokens returned");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or validation errors");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Invalid or expired refresh token");
+        });
     }
 
     public override async Task HandleAsync(RefreshTokenRequest req, CancellationToken ct)
@@ -74,14 +83,12 @@ public class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, RefreshTokenRe
         if (storedToken.ExpiryDate < DateTime.UtcNow)
         {
             await Send.UnauthorizedAsync(ct);
-            AddError("Invalid or expired refresh token");
-            await Send.ErrorsAsync(cancellation: ct);
             return;
         }
 
         // Check if user exists and is not deleted
         var user = storedToken.User;
-        if (user == null || user.IsDeleted)
+        if (user.IsDeleted)
         {
             await Send.UnauthorizedAsync(ct);
             AddError("Invalid or expired refresh token");

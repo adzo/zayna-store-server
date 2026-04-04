@@ -3,9 +3,9 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Customers;
+namespace Zayna.Store.Server.Features.Admin.Users.Admins;
 
-public class UpdateCustomerRequest
+public class UpdateAdminRequest
 {
     public string Id { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -15,7 +15,7 @@ public class UpdateCustomerRequest
     public string Address { get; set; } = string.Empty;
 }
 
-public class UpdateCustomerResponse
+public class UpdateAdminResponse
 {
     public string Id { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -26,9 +26,9 @@ public class UpdateCustomerResponse
     public DateTime CreatedAt { get; set; }
 }
 
-public class UpdateCustomerValidator : Validator<UpdateCustomerRequest>
+public class UpdateAdminValidator : Validator<UpdateAdminRequest>
 {
-    public UpdateCustomerValidator()
+    public UpdateAdminValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty();
@@ -51,22 +51,33 @@ public class UpdateCustomerValidator : Validator<UpdateCustomerRequest>
     }
 }
 
-public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, UpdateCustomerResponse>
+public class UpdateAdminEndpoint : Endpoint<UpdateAdminRequest, UpdateAdminResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public UpdateCustomerEndpoint(UserManager<ApplicationUser> userManager)
+    public UpdateAdminEndpoint(UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
     }
 
     public override void Configure()
     {
-        Put("/users/customers/{id}");
+        Put("/admin/users/admins/{id}");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Updates an existing administrator user";
+            s.Description = "Updates the details of an administrator user account. Only accessible by administrators.";
+            s.Response<UpdateAdminResponse>(StatusCodes.Status200OK, "Admin updated successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or validation errors");
+            s.Response<ProblemDetails>(StatusCodes.Status404NotFound, "Admin not found");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
-    public override async Task HandleAsync(UpdateCustomerRequest req, CancellationToken ct)
+    public override async Task HandleAsync(UpdateAdminRequest req, CancellationToken ct)
     {
         var user = await _userManager.FindByIdAsync(req.Id);
 
@@ -76,11 +87,11 @@ public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, UpdateCust
             return;
         }
 
-        // Check if user is a customer
+        // Check if user is an admin
         var roles = await _userManager.GetRolesAsync(user);
-        if (!roles.Contains(UserRoles.Customer))
+        if (!roles.Contains(UserRoles.Admin))
         {
-            AddError("User is not a customer");
+            AddError("User is not an admin");
             await Send.ErrorsAsync(cancellation: ct);
             return;
         }
@@ -104,7 +115,7 @@ public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, UpdateCust
             return;
         }
 
-        await Send.OkAsync(new UpdateCustomerResponse
+        await Send.OkAsync(new UpdateAdminResponse
         {
             Id = user.Id,
             Email = user.Email!,

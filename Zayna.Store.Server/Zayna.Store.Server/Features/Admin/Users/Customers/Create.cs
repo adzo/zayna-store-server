@@ -3,19 +3,19 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Zayna.Store.Server.Entities;
 
-namespace Zayna.Store.Server.Features.Users.Admins;
+namespace Zayna.Store.Server.Features.Admin.Users.Customers;
 
-public class UpdateAdminRequest
+public class CreateCustomerRequest
 {
-    public string Id { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
 }
 
-public class UpdateAdminResponse
+public class CreateCustomerResponse
 {
     public string Id { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -26,16 +26,16 @@ public class UpdateAdminResponse
     public DateTime CreatedAt { get; set; }
 }
 
-public class UpdateAdminValidator : Validator<UpdateAdminRequest>
+public class CreateCustomerValidator : Validator<CreateCustomerRequest>
 {
-    public UpdateAdminValidator()
+    public CreateCustomerValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty();
-
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress();
+
+        RuleFor(x => x.Password)
+            .NotEmpty();
 
         RuleFor(x => x.FirstName)
             .NotEmpty();
@@ -51,48 +51,45 @@ public class UpdateAdminValidator : Validator<UpdateAdminRequest>
     }
 }
 
-public class UpdateAdminEndpoint : Endpoint<UpdateAdminRequest, UpdateAdminResponse>
+public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CreateCustomerResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public UpdateAdminEndpoint(UserManager<ApplicationUser> userManager)
+    public CreateCustomerEndpoint(UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
     }
 
     public override void Configure()
     {
-        Put("/users/admins/{id}");
+        Post("/admin/users/customers");
         Roles(UserRoles.Admin);
+
+        Summary(s =>
+        {
+            s.Summary = "Creates a new customer user account";
+            s.Description = "Creates a new customer user with the provided details and assigns the Customer role. Only accessible by administrators.";
+            s.Response<CreateCustomerResponse>(StatusCodes.Status200OK, "Customer created successfully");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request or validation errors");
+            s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
+            s.Response<ProblemDetails>(StatusCodes.Status403Forbidden, "Forbidden - Admin role required");
+        });
     }
 
-    public override async Task HandleAsync(UpdateAdminRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CreateCustomerRequest req, CancellationToken ct)
     {
-        var user = await _userManager.FindByIdAsync(req.Id);
-
-        if (user == null)
+        var user = new ApplicationUser
         {
-            await Send.NotFoundAsync(ct);
-            return;
-        }
+            UserName = req.Email,
+            Email = req.Email,
+            FirstName = req.FirstName,
+            LastName = req.LastName,
+            PhoneNumber = req.PhoneNumber,
+            Address = req.Address,
+            CreatedAt = DateTime.UtcNow
+        };
 
-        // Check if user is an admin
-        var roles = await _userManager.GetRolesAsync(user);
-        if (!roles.Contains(UserRoles.Admin))
-        {
-            AddError("User is not an admin");
-            await Send.ErrorsAsync(cancellation: ct);
-            return;
-        }
-
-        user.Email = req.Email;
-        user.UserName = req.Email;
-        user.FirstName = req.FirstName;
-        user.LastName = req.LastName;
-        user.PhoneNumber = req.PhoneNumber;
-        user.Address = req.Address;
-
-        var result = await _userManager.UpdateAsync(user);
+        var result = await _userManager.CreateAsync(user, req.Password);
 
         if (!result.Succeeded)
         {
@@ -104,7 +101,9 @@ public class UpdateAdminEndpoint : Endpoint<UpdateAdminRequest, UpdateAdminRespo
             return;
         }
 
-        await Send.OkAsync(new UpdateAdminResponse
+        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
+
+        await Send.OkAsync(new CreateCustomerResponse
         {
             Id = user.Id,
             Email = user.Email!,
