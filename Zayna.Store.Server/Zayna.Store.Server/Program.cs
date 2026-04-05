@@ -1,8 +1,11 @@
+using System.Text;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Zayna.Store.Server.Data;
 using Zayna.Store.Server.Entities;
 using Zayna.Store.Server.Services;
@@ -11,8 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+// Configure Database
+var databaseConfig = builder.Configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>()
+    ?? throw new InvalidOperationException("DatabaseConfig section is missing or invalid in appsettings.json");
+
+builder.Services.AddSingleton(databaseConfig);
+
 builder.Services.AddDbContext<StoreDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseNpgsql(databaseConfig.ConnectionString));
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
@@ -26,20 +35,38 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 .AddEntityFrameworkStores<StoreDbContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.AddAuthenticationJwtBearer(s =>
-{
-    s.SigningKey = builder.Configuration["JwtSettings:SigningKey"] ?? "MyLongSecretForSigningJwtTokens";
-});
-
-// Configure JWT Bearer validation parameters
-builder.Services.PostConfigure<Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions>(
-    Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
-    options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        options.TokenValidationParameters.ValidateIssuer = true;
-        options.TokenValidationParameters.ValidateAudience = true;
-        options.TokenValidationParameters.ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "ZaynaStore";
-        options.TokenValidationParameters.ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? "ZaynaStoreClient";
+        var secret = builder.Configuration.GetSection("JwtSettings:SigningKey").Get<string>()
+                     ?? throw new ApplicationException("Invalid signing key");
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+            ValidIssuer = builder.Configuration.GetSection("JwtSettings:Issuer").Get<string>(),
+            ValidAudience = builder.Configuration.GetSection("JwtSettings:Audience").Get<string>(),
+            IssuerSigningKey = key,
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                return Task.CompletedTask;
+            },
+            OnForbidden = context =>
+            {
+                return Task.CompletedTask;
+            },
+            OnMessageReceived = context =>
+            {
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -51,6 +78,14 @@ builder.Services.AddFastEndpoints()
             s.Title = "Zayna Store";
             s.Description = "Zayna Store API for our new Store";
             s.Version = "v1";
+
+            s.AddAuth("Bearer", new()
+            {
+                Type = NSwag.OpenApiSecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Description = "Enter your JWT token"
+            });
         };
     });
 

@@ -26,24 +26,27 @@ public class TokenService
         var issuer = _configuration["JwtSettings:Issuer"] ?? "ZaynaStore";
         var audience = _configuration["JwtSettings:Audience"] ?? "ZaynaStoreClient";
 
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id),
             new(JwtRegisteredClaimNames.Email, user.Email!),
             new(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
+        claims.AddRange(roles.Select(role => new Claim("role", role)));
 
-        return JwtBearer.CreateToken(o =>
-        {
-            o.SigningKey = signingKey;
-            o.ExpireAt = DateTime.UtcNow.AddMinutes(expiryMinutes);
-            o.Issuer = issuer;
-            o.Audience = audience;
-            o.User.Roles.AddRange(roles);
-            o.User.Claims.AddRange(claims);
-        });
+        var jwt = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 
     public string GenerateRefreshToken()
