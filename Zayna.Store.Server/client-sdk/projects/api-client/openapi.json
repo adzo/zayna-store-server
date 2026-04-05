@@ -1,0 +1,4549 @@
+{
+  "x-generator": "NSwag v14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Zayna Store",
+    "description": "Zayna Store API for our new Store",
+    "version": "v1"
+  },
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Retrieves active products with pagination (public)",
+        "description": "Returns a paginated list of active products with main image only. Supports filtering by category and text search. No authentication required.",
+        "operationId": "GetPublicProductsEndpoint",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products retrieved successfully with pagination info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsGetPublicProductsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Retrieves product details by ID (public)",
+        "description": "Returns full product details including all images and category information. Only returns active products. No authentication required.",
+        "operationId": "GetPublicProductByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsPublicProductDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found or inactive",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Retrieves all product categories (public)",
+        "description": "Returns a minimal list of all categories (ID and name only) for public browsing. No authentication required.",
+        "operationId": "GetPublicCategoriesEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicCategoriesGetPublicCategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Retrieves all orders for authenticated user",
+        "description": "Returns a list of all orders placed by the authenticated user. Only shows orders belonging to the current user.",
+        "operationId": "GetAllMyOrdersEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of orders retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersGetAllMyOrdersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin",
+              "Customer"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Place a new order",
+        "description": "Creates a new order for the authenticated user. Validates product availability, applies coupon discount if provided, and calculates total amount. Accessible by both customers and admins.",
+        "operationId": "PlaceOrderEndpoint",
+        "requestBody": {
+          "x-name": "PlaceOrderRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersPlaceOrderRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Order placed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersPlaceOrderResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request - missing items, insufficient stock, invalid products, or invalid coupon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin",
+              "Customer"
+            ]
+          }
+        ]
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Retrieves order details by ID",
+        "description": "Returns full order details including order items. Users can only access their own orders.",
+        "operationId": "GetMyOrderByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersGetMyOrderByIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - you can only access your own orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin",
+              "Customer"
+            ]
+          }
+        ]
+      }
+    },
+    "/coupons/validate": {
+      "post": {
+        "tags": [
+          "Coupons"
+        ],
+        "summary": "Validates a coupon code",
+        "description": "Checks if a coupon code is valid for the authenticated user and calculates the discount amount. Returns validation status, discount details, and final order total.",
+        "operationId": "ValidateCouponEndpoint",
+        "requestBody": {
+          "x-name": "ValidateCouponRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesCouponsValidateCouponRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Coupon validation result returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesCouponsValidateCouponResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin",
+              "Customer"
+            ]
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Authenticates a user and returns JWT tokens",
+        "description": "Validates user credentials and returns an access token (30 minutes) and refresh token (15 days) along with user information and roles. Publicly accessible.",
+        "operationId": "LoginEndpoint",
+        "requestBody": {
+          "x-name": "LoginRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthLoginRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful, tokens returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthLoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refreshes an expired access token",
+        "description": "Exchanges a valid refresh token for a new access token and refresh token. The old refresh token is revoked (single-use). Publicly accessible.",
+        "operationId": "RefreshTokenEndpoint",
+        "requestBody": {
+          "x-name": "RefreshTokenRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthRefreshTokenRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully, new tokens returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthRefreshTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired refresh token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/customers": {
+      "post": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Creates a new customer user account",
+        "description": "Creates a new customer user with the provided details and assigns the Customer role. Only accessible by administrators.",
+        "operationId": "CreateCustomerEndpoint",
+        "requestBody": {
+          "x-name": "CreateCustomerRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Customer created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Retrieves all customer users",
+        "description": "Returns a list of all users with the Customer role. Only accessible by administrators.",
+        "operationId": "GetAllCustomersEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of customers retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersGetAllCustomersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/users/customers/{id}": {
+      "delete": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Soft deletes a customer user",
+        "description": "Marks a customer user as deleted without permanently removing the record. Only accessible by administrators.",
+        "operationId": "DeleteCustomerEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Customer deleted successfully"
+          },
+          "400": {
+            "description": "Invalid request or user is not a customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Customer not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Retrieves a customer user by ID",
+        "description": "Returns detailed information about a specific customer user. Only accessible by administrators.",
+        "operationId": "GetCustomerByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersGetCustomerByIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Customer not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Updates an existing customer user",
+        "description": "Updates the details of a customer user account. Only accessible by administrators.",
+        "operationId": "UpdateCustomerEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "UpdateCustomerRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Customer updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Customer not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/users/admins": {
+      "post": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Creates a new administrator user account",
+        "description": "Creates a new user with the provided details and assigns the Admin role. Only accessible by existing administrators.",
+        "operationId": "CreateAdminEndpoint",
+        "requestBody": {
+          "x-name": "CreateAdminRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Admin created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Retrieves all administrator users",
+        "description": "Returns a list of all users with the Admin role. Only accessible by administrators.",
+        "operationId": "GetAllAdminsEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of admins retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsGetAllAdminsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/users/admins/{id}": {
+      "delete": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Soft deletes an administrator user",
+        "description": "Marks an administrator user as deleted without permanently removing the record. Only accessible by administrators.",
+        "operationId": "DeleteAdminEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Admin deleted successfully"
+          },
+          "400": {
+            "description": "Invalid request or user is not an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Admin not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Retrieves an administrator user by ID",
+        "description": "Returns detailed information about a specific administrator user. Only accessible by administrators.",
+        "operationId": "GetAdminByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Admin details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsGetAdminByIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Admin not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AdminUsers"
+        ],
+        "summary": "Updates an existing administrator user",
+        "description": "Updates the details of an administrator user account. Only accessible by administrators.",
+        "operationId": "UpdateAdminEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "UpdateAdminRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Admin updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Admin not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/products/{productId}/images": {
+      "post": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Adds an image to a product",
+        "description": "Adds a new image to an existing product. If marked as main, automatically unsets other main images. Only accessible by administrators.",
+        "operationId": "AddImageEndpoint",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "AddImageRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsAddImageRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Image added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/products": {
+      "post": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Creates a new product with images",
+        "description": "Creates a new product with multiple images. At least one image is required and exactly one must be marked as main. Only accessible by administrators.",
+        "operationId": "CreateProductEndpoint",
+        "requestBody": {
+          "x-name": "CreateProductRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsCreateProductRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, validation errors, or category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Retrieves all products",
+        "description": "Returns a list of all products with full details including all images and category information. Only accessible by administrators.",
+        "operationId": "GetAllProductsEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of products retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsGetAllProductsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/products/{id}": {
+      "delete": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Deletes a product",
+        "description": "Permanently deletes a product and all associated images. Only accessible by administrators.",
+        "operationId": "DeleteProductEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Product deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Retrieves a product by ID",
+        "description": "Returns detailed information about a specific product including all images and category. Only accessible by administrators.",
+        "operationId": "GetProductByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Updates an existing product",
+        "description": "Updates product details (name, description, price, stock, category, active status). Images are managed separately via image endpoints. Only accessible by administrators.",
+        "operationId": "UpdateProductEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "UpdateProductRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsUpdateProductRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, validation errors, or category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/products/images/{imageId}": {
+      "delete": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Deletes a product image",
+        "description": "Removes an image from a product. Cannot delete the last remaining image. If deleting the main image, automatically promotes another image to main. Only accessible by administrators.",
+        "operationId": "DeleteImageEndpoint",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Image deleted successfully"
+          },
+          "400": {
+            "description": "Cannot delete the only remaining image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Image not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/products/images/{imageId}/set-main": {
+      "put": {
+        "tags": [
+          "AdminProducts"
+        ],
+        "summary": "Sets an image as the main product image",
+        "description": "Marks a specific image as the main product image. Automatically unsets other main images for the same product. Only accessible by administrators.",
+        "operationId": "SetMainImageEndpoint",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image set as main successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Image not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/orders": {
+      "get": {
+        "tags": [
+          "AdminOrders"
+        ],
+        "summary": "Retrieves all orders",
+        "description": "Returns a list of all orders with customer information and order details. Only accessible by administrators.",
+        "operationId": "GetAllOrdersEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of orders retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersGetAllOrdersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/orders/{id}": {
+      "get": {
+        "tags": [
+          "AdminOrders"
+        ],
+        "summary": "Retrieves order details by ID",
+        "description": "Returns full order details including customer information and order items. Only accessible by administrators.",
+        "operationId": "GetOrderByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersGetOrderByIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/orders/{id}/status": {
+      "put": {
+        "tags": [
+          "AdminOrders"
+        ],
+        "summary": "Updates order status",
+        "description": "Changes the status of an order. Automatically sets ShippedDate when status is Shipped and DeliveredDate when status is Delivered. Only accessible by administrators.",
+        "operationId": "UpdateOrderStatusEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "UpdateOrderStatusRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Order status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/coupons": {
+      "post": {
+        "tags": [
+          "AdminCoupons"
+        ],
+        "summary": "Creates a new coupon code",
+        "description": "Creates a new discount coupon with validation rules and usage limits. Code must be unique and contain only uppercase letters and numbers. Only accessible by administrators.",
+        "operationId": "CreateCouponEndpoint",
+        "requestBody": {
+          "x-name": "CreateCouponRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCreateCouponRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Coupon created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, validation errors, or coupon code already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminCoupons"
+        ],
+        "summary": "Retrieves all coupons",
+        "description": "Returns a list of all discount coupons with usage statistics. Only accessible by administrators.",
+        "operationId": "GetAllCouponsEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of coupons retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsGetAllCouponsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/coupons/{id}/disable": {
+      "put": {
+        "tags": [
+          "AdminCoupons"
+        ],
+        "summary": "Disables a coupon",
+        "description": "Marks a coupon as inactive, preventing it from being used. Only accessible by administrators.",
+        "operationId": "DisableCouponEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coupon disabled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/coupons/{id}/enable": {
+      "put": {
+        "tags": [
+          "AdminCoupons"
+        ],
+        "summary": "Enables a coupon",
+        "description": "Marks a coupon as active, allowing it to be used if other conditions are met. Only accessible by administrators.",
+        "operationId": "EnableCouponEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coupon enabled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/coupons/{id}": {
+      "get": {
+        "tags": [
+          "AdminCoupons"
+        ],
+        "summary": "Retrieves coupon details by ID",
+        "description": "Returns detailed information about a specific coupon including usage statistics. Only accessible by administrators.",
+        "operationId": "GetCouponByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coupon retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AdminCoupons"
+        ],
+        "summary": "Updates an existing coupon",
+        "description": "Updates coupon details. Coupon code cannot be changed after creation. Only accessible by administrators.",
+        "operationId": "UpdateCouponEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "UpdateCouponRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsUpdateCouponRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Coupon updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/categories": {
+      "post": {
+        "tags": [
+          "AdminCategories"
+        ],
+        "summary": "Creates a new product category",
+        "description": "Creates a new category for organizing products. Only accessible by administrators.",
+        "operationId": "CreateCategoryEndpoint",
+        "requestBody": {
+          "x-name": "CreateCategoryRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCreateCategoryRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCategoryDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminCategories"
+        ],
+        "summary": "Retrieves all product categories",
+        "description": "Returns a list of all categories with product counts. Only accessible by administrators.",
+        "operationId": "GetAllCategoriesEndpoint",
+        "responses": {
+          "200": {
+            "description": "List of categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesGetAllCategoriesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/admin/categories/{id}": {
+      "delete": {
+        "tags": [
+          "AdminCategories"
+        ],
+        "summary": "Deletes a category",
+        "description": "Permanently deletes a category if it has no associated products. Only accessible by administrators.",
+        "operationId": "DeleteCategoryEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Category deleted successfully"
+          },
+          "400": {
+            "description": "Category has associated products and cannot be deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdminCategories"
+        ],
+        "summary": "Retrieves a category by ID",
+        "description": "Returns detailed information about a specific category including product count. Only accessible by administrators.",
+        "operationId": "GetCategoryByIdEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCategoryDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AdminCategories"
+        ],
+        "summary": "Updates an existing category",
+        "description": "Updates the details of a product category. Only accessible by administrators.",
+        "operationId": "UpdateCategoryEndpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "UpdateCategoryRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesUpdateCategoryRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Category updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCategoryDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": [
+              "Admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ZaynaStoreServerFeaturesPublicProductsGetPublicProductsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsPublicProductListDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesPublicProductsPublicProductListDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mainImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryName": {
+            "type": "string"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesPublicProductsGetPublicProductsRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesPublicProductsPublicProductDetailDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsPublicProductImageDto"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesPublicProductsPublicProductImageDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "isMain": {
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesPublicProductsGetPublicProductByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FastEndpointsProblemDetails": {
+        "type": "object",
+        "description": "RFC7807 compatible problem details/ error response class. this can be used by configuring startup like so:\napp.UseFastEndpoints(c => c.Errors.UseProblemDetails())",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1"
+          },
+          "title": {
+            "type": "string",
+            "default": "One or more validation errors occurred."
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "default": 400
+          },
+          "instance": {
+            "type": "string",
+            "default": "/api/route"
+          },
+          "traceId": {
+            "type": "string",
+            "default": "0HMPNHL0JHL76:00000001"
+          },
+          "detail": {
+            "type": "string",
+            "description": "the details of the error",
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FastEndpointsProblemDetails_Error"
+            }
+          }
+        }
+      },
+      "FastEndpointsProblemDetails_Error": {
+        "type": "object",
+        "description": "the error details object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "the name of the error or property of the dto that caused the error",
+            "default": "Error or field name"
+          },
+          "reason": {
+            "type": "string",
+            "description": "the reason for the error",
+            "default": "Error reason"
+          },
+          "code": {
+            "type": "string",
+            "description": "the code of the error",
+            "nullable": true
+          },
+          "severity": {
+            "type": "string",
+            "description": "the severity of the error",
+            "nullable": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesPublicCategoriesGetPublicCategoriesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicCategoriesPublicCategoryDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesPublicCategoriesPublicCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersGetAllMyOrdersResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersMyOrderDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersMyOrderDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "shippedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deliveredDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "itemCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerEntitiesOrderStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Pending",
+          "Processing",
+          "Shipped",
+          "Delivered",
+          "Cancelled"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "ZaynaStoreServerFeaturesOrdersGetMyOrderByIdResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          },
+          "subTotal": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "discountAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "couponCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "shippedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deliveredDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersMyOrderItemDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersMyOrderItemDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersGetMyOrderByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesOrdersPlaceOrderResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          },
+          "subTotal": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "discountAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "couponCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersPlacedOrderItemDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersPlacedOrderItemDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersPlaceOrderRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "shippingAddress",
+          "items"
+        ],
+        "properties": {
+          "shippingAddress": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 0,
+            "nullable": false
+          },
+          "items": {
+            "type": "array",
+            "minLength": 1,
+            "nullable": false,
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersOrderItemRequest"
+            }
+          },
+          "couponCode": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesOrdersOrderItemRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesCouponsValidateCouponResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isValid": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "coupon": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesCouponsCouponValidationDto"
+              }
+            ]
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesCouponsCouponValidationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string"
+          },
+          "discountType": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+          },
+          "discountValue": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "discountAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "finalTotal": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ZaynaStoreServerEntitiesDiscountType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Percentage",
+          "FixedAmount"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "ZaynaStoreServerFeaturesCouponsValidateCouponRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "orderTotal": {
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAuthLoginResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthUserDto"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAuthUserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAuthLoginRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "nullable": false
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAuthRefreshTokenResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tokenType": {
+            "type": "string"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAuthRefreshTokenRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "refreshToken"
+        ],
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "password",
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "address"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "address": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersDeleteCustomerRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersGetAllCustomersResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersCustomerDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersCustomerDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersGetCustomerByIdResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersGetCustomerByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "address"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "address": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "password",
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "address"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "address": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsDeleteAdminRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsGetAllAdminsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "admins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsAdminDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsAdminDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsGetAdminByIdResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsGetAdminByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "address"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "address": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsProductImageDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "isMain": {
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsAddImageRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "imageUrl"
+        ],
+        "properties": {
+          "imageUrl": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 0,
+            "nullable": false
+          },
+          "isMain": {
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsProductDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageDto"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsCreateProductRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "images"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 0,
+            "nullable": false
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "images": {
+            "type": "array",
+            "minLength": 1,
+            "nullable": false,
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageInput"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsProductImageInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "imageUrl": {
+            "type": "string"
+          },
+          "isMain": {
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsDeleteProductRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminProductsDeleteImageRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminProductsGetAllProductsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminProductsGetProductByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminProductsSetMainImageRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminProductsUpdateProductRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 0,
+            "nullable": false
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersGetAllOrdersResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersOrderDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersOrderDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "customerEmail": {
+            "type": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "shippedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deliveredDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "itemCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersGetOrderByIdResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "customerEmail": {
+            "type": "string"
+          },
+          "customerPhone": {
+            "type": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          },
+          "subTotal": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "discountAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "couponCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "shippedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deliveredDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersOrderItemDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersOrderItemDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersGetOrderByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          },
+          "shippedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deliveredDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsCouponDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string"
+          },
+          "discountType": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+          },
+          "discountValue": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "maxUses": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "currentUses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minimumOrderAmount": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsCreateCouponRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "validFrom",
+          "validTo"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0,
+            "pattern": "^[A-Z0-9]+$",
+            "nullable": false
+          },
+          "discountType": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+          },
+          "discountValue": {
+            "type": "number",
+            "format": "decimal",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1,
+            "nullable": false
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1,
+            "nullable": false
+          },
+          "maxUses": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0,
+            "nullable": true,
+            "exclusiveMinimum": true
+          },
+          "minimumOrderAmount": {
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.0,
+            "nullable": true,
+            "exclusiveMinimum": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsDisableCouponRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsEnableCouponRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsGetAllCouponsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "coupons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsGetCouponByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminCouponsUpdateCouponRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "validFrom",
+          "validTo"
+        ],
+        "properties": {
+          "discountType": {
+            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+          },
+          "discountValue": {
+            "type": "number",
+            "format": "decimal",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1,
+            "nullable": false
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1,
+            "nullable": false
+          },
+          "maxUses": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0.0,
+            "nullable": true,
+            "exclusiveMinimum": true
+          },
+          "minimumOrderAmount": {
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.0,
+            "nullable": true,
+            "exclusiveMinimum": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCategoriesCategoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "productCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCategoriesCreateCategoryRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0,
+            "nullable": false
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCategoriesDeleteCategoryRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminCategoriesGetAllCategoriesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZaynaStoreServerModelsMinimalItem"
+            }
+          }
+        }
+      },
+      "ZaynaStoreServerModelsMinimalItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "ZaynaStoreServerFeaturesAdminCategoriesGetCategoryByIdRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ZaynaStoreServerFeaturesAdminCategoriesUpdateCategoryRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0,
+            "nullable": false
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWTBearerAuth": {
+        "type": "http",
+        "description": "Enter a JWT token to authorize the requests...",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

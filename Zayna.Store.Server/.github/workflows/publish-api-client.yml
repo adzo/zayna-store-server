@@ -1,0 +1,88 @@
+name: Publish API Client
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Zayna.Store.Server/**'
+      - 'client-sdk/**'
+      - '.github/workflows/publish-api-client.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore .NET dependencies
+        working-directory: ./Zayna.Store.Server
+        run: dotnet restore
+
+      - name: Build .NET API
+        working-directory: ./Zayna.Store.Server
+        run: dotnet build --configuration Release --no-restore
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+
+      - name: Verify OpenAPI file generated
+        run: |
+          if [ ! -f "client-sdk/projects/api-client/openapi.json" ]; then
+            echo "Error: openapi.json was not generated"
+            exit 1
+          fi
+          echo "OpenAPI file generated successfully"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@zayna'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install npm dependencies
+        working-directory: ./client-sdk
+        run: npm ci
+
+      - name: Generate TypeScript client
+        working-directory: ./client-sdk
+        run: npm run sdk:gen:zayna-store
+
+      - name: Build Angular library
+        working-directory: ./client-sdk
+        run: npm run sdk:build:zayna-store
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run semantic-release
+        working-directory: ./client-sdk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
