@@ -2,12 +2,13 @@ using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Zayna.Store.Server.Data;
 using Zayna.Store.Server.Entities;
+using Zayna.Store.Server.Models;
 
 namespace Zayna.Store.Server.Features.Admin.Categories;
 
 public class GetAllCategoriesResponse
 {
-    public List<CategoryDto> Categories { get; set; } = new();
+    public List<MinimalItem> Categories { get; set; } = new();
 }
 
 public class GetAllCategoriesEndpoint : EndpointWithoutRequest<GetAllCategoriesResponse>
@@ -37,14 +38,7 @@ public class GetAllCategoriesEndpoint : EndpointWithoutRequest<GetAllCategoriesR
     public override async Task HandleAsync(CancellationToken ct)
     {
         var categories = await _dbContext.Categories
-            .Select(c => new CategoryDto
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Description = c.Description,
-                CreatedAt = c.CreatedAt,
-                ProductCount = c.Products.Count
-            })
+            .Select(c => new MinimalItem(c.Id, c.Name))
             .ToListAsync(ct);
 
         await Send.OkAsync(new GetAllCategoriesResponse

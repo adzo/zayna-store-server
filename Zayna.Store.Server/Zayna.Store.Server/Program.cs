@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NSwag;
 using Zayna.Store.Server.Data;
 using Zayna.Store.Server.Entities;
 using Zayna.Store.Server.Services;
@@ -52,21 +53,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration.GetSection("JwtSettings:Audience").Get<string>(),
             IssuerSigningKey = key,
         };
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = context =>
-            {
-                return Task.CompletedTask;
-            },
-            OnForbidden = context =>
-            {
-                return Task.CompletedTask;
-            },
-            OnMessageReceived = context =>
-            {
-                return Task.CompletedTask;
-            }
-        };
     });
 
 builder.Services.AddAuthorization();
@@ -79,9 +65,9 @@ builder.Services.AddFastEndpoints()
             s.Description = "Zayna Store API for our new Store";
             s.Version = "v1";
 
-            s.AddAuth("Bearer", new()
+            s.AddAuth("Bearer", new OpenApiSecurityScheme
             {
-                Type = NSwag.OpenApiSecuritySchemeType.Http,
+                Type = OpenApiSecuritySchemeType.Http,
                 Scheme = "bearer",
                 BearerFormat = "JWT",
                 Description = "Enter your JWT token"
