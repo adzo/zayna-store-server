@@ -64,6 +64,8 @@ jobs:
 
       - name: Install npm dependencies
         working-directory: ./client-sdk
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm ci
 
       - name: Generate TypeScript client

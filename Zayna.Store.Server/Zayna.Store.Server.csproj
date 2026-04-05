@@ -8,6 +8,7 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
         <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
         <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)\..\client-sdk\projects\api-client</OpenApiDocumentsDirectory>
         <OpenApiGenerateDocumentsOptions>--file-name openapi</OpenApiGenerateDocumentsOptions>
