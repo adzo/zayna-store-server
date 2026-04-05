@@ -64,6 +64,7 @@ public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, UpdateCust
     {
         Put("/admin/users/customers/{id}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>
         {

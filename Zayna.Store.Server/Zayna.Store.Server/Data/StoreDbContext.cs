@@ -17,6 +17,8 @@ public class StoreDbContext: IdentityDbContext<ApplicationUser>
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
+    public DbSet<Coupon> Coupons { get; set; }
+    public DbSet<CouponUsage> CouponUsages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,11 +55,18 @@ public class StoreDbContext: IdentityDbContext<ApplicationUser>
         {
             entity.HasKey(o => o.Id);
             entity.Property(o => o.OrderNumber).IsRequired().HasMaxLength(50);
+            entity.Property(o => o.SubTotal).HasColumnType("decimal(18,2)");
+            entity.Property(o => o.DiscountAmount).HasColumnType("decimal(18,2)");
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
 
             entity.HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(o => o.Coupon)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CouponId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(o => o.OrderNumber).IsUnique();
@@ -112,6 +121,43 @@ public class StoreDbContext: IdentityDbContext<ApplicationUser>
 
             entity.HasIndex(pi => pi.ProductId);
             entity.HasIndex(pi => pi.IsMain);
+        });
+
+        // Coupon configuration
+        modelBuilder.Entity<Coupon>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+            entity.Property(c => c.Code).IsRequired().HasMaxLength(50);
+            entity.Property(c => c.DiscountValue).HasColumnType("decimal(18,2)");
+            entity.Property(c => c.MinimumOrderAmount).HasColumnType("decimal(18,2)");
+
+            entity.HasIndex(c => c.Code).IsUnique();
+            entity.HasIndex(c => c.IsActive);
+            entity.HasIndex(c => new { c.ValidFrom, c.ValidTo });
+        });
+
+        // CouponUsage configuration
+        modelBuilder.Entity<CouponUsage>(entity =>
+        {
+            entity.HasKey(cu => cu.Id);
+
+            entity.HasOne(cu => cu.Coupon)
+                .WithMany(c => c.CouponUsages)
+                .HasForeignKey(cu => cu.CouponId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(cu => cu.User)
+                .WithMany(u => u.CouponUsages)
+                .HasForeignKey(cu => cu.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(cu => cu.Order)
+                .WithMany()
+                .HasForeignKey(cu => cu.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(cu => new { cu.CouponId, cu.UserId }).IsUnique();
+            entity.HasIndex(cu => cu.UserId);
         });
     }
 }

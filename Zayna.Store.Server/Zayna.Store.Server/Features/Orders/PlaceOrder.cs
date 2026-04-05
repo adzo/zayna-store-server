@@ -11,6 +11,7 @@ public class PlaceOrderRequest
 {
     public string ShippingAddress { get; set; } = string.Empty;
     public List<OrderItemRequest> Items { get; set; } = new();
+    public string? CouponCode { get; set; }
 }
 
 public class OrderItemRequest
@@ -25,7 +26,10 @@ public class PlaceOrderResponse
     public string OrderNumber { get; set; } = string.Empty;
     public DateTime OrderDate { get; set; }
     public OrderStatus Status { get; set; }
+    public decimal SubTotal { get; set; }
+    public decimal DiscountAmount { get; set; }
     public decimal TotalAmount { get; set; }
+    public string? CouponCode { get; set; }
     public string ShippingAddress { get; set; } = string.Empty;
     public List<PlacedOrderItemDto> Items { get; set; } = new();
 }
@@ -79,13 +83,14 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
     {
         Post("/orders");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Description(x => x.WithTags("Orders"));
 
         Summary(s =>
         {
             s.Summary = "Place a new order";
-            s.Description = "Creates a new order for the authenticated user. Validates product availability and calculates total amount. Accessible by both customers and admins.";
+            s.Description = "Creates a new order for the authenticated user. Validates product availability, applies coupon discount if provided, and calculates total amount. Accessible by both customers and admins.";
             s.Response<PlaceOrderResponse>(StatusCodes.Status201Created, "Order placed successfully");
-            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request - missing items, insufficient stock, or invalid products");
+            s.Response<ProblemDetails>(StatusCodes.Status400BadRequest, "Invalid request - missing items, insufficient stock, invalid products, or invalid coupon");
             s.Response<ProblemDetails>(StatusCodes.Status401Unauthorized, "Unauthorized - authentication required");
         });
     }
@@ -112,9 +117,9 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
             return;
         }
 
-        // Validate stock and calculate total
+        // Validate stock and calculate subtotal
         var orderItems = new List<OrderItem>();
-        decimal totalAmount = 0;
+        decimal subTotal = 0;
 
         foreach (var item in req.Items)
         {
@@ -128,7 +133,7 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
             }
 
             var itemTotal = product.Price * item.Quantity;
-            totalAmount += itemTotal;
+            subTotal += itemTotal;
 
             orderItems.Add(new OrderItem
             {
@@ -142,6 +147,74 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
             product.StockQuantity -= item.Quantity;
         }
 
+        // Validate and apply coupon if provided
+        Coupon? coupon = null;
+        decimal discountAmount = 0;
+
+        if (!string.IsNullOrWhiteSpace(req.CouponCode))
+        {
+            coupon = await _dbContext.Coupons
+                .FirstOrDefaultAsync(c => c.Code.ToLower() == req.CouponCode.ToLower(), ct);
+
+            if (coupon == null)
+            {
+                AddError("Coupon code does not exist");
+                await Send.ErrorsAsync(cancellation: ct);
+                return;
+            }
+
+            if (!coupon.IsActive)
+            {
+                AddError("This coupon is no longer active");
+                await Send.ErrorsAsync(cancellation: ct);
+                return;
+            }
+
+            var now = DateTime.UtcNow;
+            if (now < coupon.ValidFrom || now > coupon.ValidTo)
+            {
+                AddError("This coupon is not valid at this time");
+                await Send.ErrorsAsync(cancellation: ct);
+                return;
+            }
+
+            var alreadyUsed = await _dbContext.CouponUsages
+                .AnyAsync(cu => cu.CouponId == coupon.Id && cu.UserId == userId, ct);
+
+            if (alreadyUsed)
+            {
+                AddError("You have already used this coupon");
+                await Send.ErrorsAsync(cancellation: ct);
+                return;
+            }
+
+            if (coupon.MaxUses.HasValue && coupon.CurrentUses >= coupon.MaxUses.Value)
+            {
+                AddError("This coupon has reached its maximum number of uses");
+                await Send.ErrorsAsync(cancellation: ct);
+                return;
+            }
+
+            if (coupon.MinimumOrderAmount.HasValue && subTotal < coupon.MinimumOrderAmount.Value)
+            {
+                AddError($"Minimum order amount of {coupon.MinimumOrderAmount.Value:C} required to use this coupon");
+                await Send.ErrorsAsync(cancellation: ct);
+                return;
+            }
+
+            // Calculate discount
+            discountAmount = coupon.DiscountType == DiscountType.Percentage
+                ? subTotal * (coupon.DiscountValue / 100)
+                : coupon.DiscountValue;
+
+            if (discountAmount > subTotal)
+            {
+                discountAmount = subTotal;
+            }
+        }
+
+        decimal totalAmount = subTotal - discountAmount;
+
         // Generate order number
         var orderNumber = $"ORD-{DateTime.UtcNow:yyyyMMdd}-{Guid.NewGuid().ToString()[..8].ToUpper()}";
 
@@ -152,7 +225,10 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
             UserId = userId,
             OrderDate = DateTime.UtcNow,
             Status = OrderStatus.Pending,
+            SubTotal = subTotal,
+            DiscountAmount = discountAmount,
             TotalAmount = totalAmount,
+            CouponId = coupon?.Id,
             ShippingAddress = req.ShippingAddress,
             OrderItems = orderItems
         };
@@ -160,13 +236,35 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
         _dbContext.Orders.Add(order);
         await _dbContext.SaveChangesAsync(ct);
 
+        // Create coupon usage record if coupon was applied
+        if (coupon != null)
+        {
+            var couponUsage = new CouponUsage
+            {
+                CouponId = coupon.Id,
+                UserId = userId,
+                OrderId = order.Id,
+                UsedAt = DateTime.UtcNow
+            };
+
+            _dbContext.CouponUsages.Add(couponUsage);
+
+            // Increment coupon usage count
+            coupon.CurrentUses++;
+
+            await _dbContext.SaveChangesAsync(ct);
+        }
+
         var response = new PlaceOrderResponse
         {
             Id = order.Id,
             OrderNumber = order.OrderNumber,
             OrderDate = order.OrderDate,
             Status = order.Status,
+            SubTotal = order.SubTotal,
+            DiscountAmount = order.DiscountAmount,
             TotalAmount = order.TotalAmount,
+            CouponCode = coupon?.Code,
             ShippingAddress = order.ShippingAddress,
             Items = order.OrderItems.Select(oi => new PlacedOrderItemDto
             {

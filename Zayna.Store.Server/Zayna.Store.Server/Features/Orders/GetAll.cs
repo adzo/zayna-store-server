@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Zayna.Store.Server.Data;
@@ -36,6 +37,7 @@ public class GetAllMyOrdersEndpoint : EndpointWithoutRequest<GetAllMyOrdersRespo
     {
         Get("/orders");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Description(x => x.WithTags("Orders"));
 
         Summary(s =>
         {
@@ -48,7 +50,7 @@ public class GetAllMyOrdersEndpoint : EndpointWithoutRequest<GetAllMyOrdersRespo
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var userId = User.FindFirst("sub")?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))
         {
             await Send.UnauthorizedAsync(ct);

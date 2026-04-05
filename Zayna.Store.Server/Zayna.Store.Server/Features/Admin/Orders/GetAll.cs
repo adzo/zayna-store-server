@@ -39,6 +39,7 @@ public class GetAllOrdersEndpoint : EndpointWithoutRequest<GetAllOrdersResponse>
     {
         Get("/admin/orders");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminOrders"));
 
         Summary(s =>
         {

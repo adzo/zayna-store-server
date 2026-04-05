@@ -33,6 +33,7 @@ public class GetAllAdminsEndpoint : EndpointWithoutRequest<GetAllAdminsResponse>
     {
         Get("/admin/users/admins");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>
         {

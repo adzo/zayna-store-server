@@ -24,6 +24,7 @@ public class GetAllCategoriesEndpoint : EndpointWithoutRequest<GetAllCategoriesR
     {
         Get("/admin/categories");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminCategories"));
 
         Summary(s =>
         {

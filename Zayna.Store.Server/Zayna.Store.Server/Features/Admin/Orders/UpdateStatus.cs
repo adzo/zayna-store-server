@@ -48,6 +48,7 @@ public class UpdateOrderStatusEndpoint : Endpoint<UpdateOrderStatusRequest, Upda
     {
         Put("/admin/orders/{id}/status");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminOrders"));
 
         Summary(s =>
         {

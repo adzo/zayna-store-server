@@ -23,6 +23,7 @@ public class GetAllProductsEndpoint : EndpointWithoutRequest<GetAllProductsRespo
     {
         Get("/admin/products");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>
         {

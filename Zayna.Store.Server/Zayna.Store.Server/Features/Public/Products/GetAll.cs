@@ -44,6 +44,7 @@ public class GetPublicProductsEndpoint : Endpoint<GetPublicProductsRequest, GetP
     {
         Get("/products");
         AllowAnonymous();
+        Description(x => x.WithTags("Products"));
 
         Summary(s =>
         {

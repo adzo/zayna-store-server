@@ -16,7 +16,10 @@ public class GetMyOrderByIdResponse
     public string OrderNumber { get; set; } = string.Empty;
     public DateTime OrderDate { get; set; }
     public OrderStatus Status { get; set; }
+    public decimal SubTotal { get; set; }
+    public decimal DiscountAmount { get; set; }
     public decimal TotalAmount { get; set; }
+    public string? CouponCode { get; set; }
     public string ShippingAddress { get; set; } = string.Empty;
     public DateTime? ShippedDate { get; set; }
     public DateTime? DeliveredDate { get; set; }
@@ -46,6 +49,7 @@ public class GetMyOrderByIdEndpoint : Endpoint<GetMyOrderByIdRequest, GetMyOrder
     {
         Get("/orders/{id}");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Description(x => x.WithTags("Orders"));
 
         Summary(s =>
         {
@@ -68,6 +72,7 @@ public class GetMyOrderByIdEndpoint : Endpoint<GetMyOrderByIdRequest, GetMyOrder
         }
 
         var order = await _dbContext.Orders
+            .Include(o => o.Coupon)
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
             .FirstOrDefaultAsync(o => o.Id == req.Id, ct);
@@ -91,7 +96,10 @@ public class GetMyOrderByIdEndpoint : Endpoint<GetMyOrderByIdRequest, GetMyOrder
             OrderNumber = order.OrderNumber,
             OrderDate = order.OrderDate,
             Status = order.Status,
+            SubTotal = order.SubTotal,
+            DiscountAmount = order.DiscountAmount,
             TotalAmount = order.TotalAmount,
+            CouponCode = order.Coupon?.Code,
             ShippingAddress = order.ShippingAddress,
             ShippedDate = order.ShippedDate,
             DeliveredDate = order.DeliveredDate,

@@ -64,6 +64,7 @@ public class UpdateAdminEndpoint : Endpoint<UpdateAdminRequest, UpdateAdminRespo
     {
         Put("/admin/users/admins/{id}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>
         {

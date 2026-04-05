@@ -52,6 +52,7 @@ public class UpdateProductEndpoint : Endpoint<UpdateProductRequest, ProductDto>
     {
         Put("/admin/products/{id}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>
         {

@@ -28,6 +28,7 @@ public class GetPublicCategoriesEndpoint : EndpointWithoutRequest<GetPublicCateg
     {
         Get("/categories");
         AllowAnonymous();
+        Description(x => x.WithTags("Categories"));
 
         Summary(s =>
         {

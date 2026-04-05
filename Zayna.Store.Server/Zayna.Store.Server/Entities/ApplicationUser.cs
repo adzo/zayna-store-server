@@ -14,6 +14,7 @@ public class ApplicationUser: IdentityUser
 
     // Navigation properties
     public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<CouponUsage> CouponUsages { get; set; } = new List<CouponUsage>();
 }
 
 public static class UserRoles

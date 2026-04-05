@@ -43,6 +43,7 @@ public class CreateCategoryEndpoint : Endpoint<CreateCategoryRequest, CategoryDt
     {
         Post("/admin/categories");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminCategories"));
 
         Summary(s =>
         {

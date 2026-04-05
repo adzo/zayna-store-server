@@ -22,6 +22,7 @@ public class DeleteCustomerEndpoint : Endpoint<DeleteCustomerRequest>
     {
         Delete("/admin/users/customers/{id}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>
         {

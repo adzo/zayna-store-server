@@ -42,6 +42,7 @@ public class GetPublicProductByIdEndpoint : Endpoint<GetPublicProductByIdRequest
     {
         Get("/products/{id}");
         AllowAnonymous();
+        Description(x => x.WithTags("Products"));
 
         Summary(s =>
         {

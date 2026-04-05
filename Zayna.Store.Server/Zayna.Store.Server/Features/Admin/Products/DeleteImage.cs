@@ -23,6 +23,7 @@ public class DeleteImageEndpoint : Endpoint<DeleteImageRequest>
     {
         Delete("/admin/products/images/{imageId}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>
         {

@@ -59,19 +59,20 @@ builder.Services.AddAuthorization();
 builder.Services.AddFastEndpoints()
     .SwaggerDocument(o =>
     {
+        o.AutoTagPathSegmentIndex = 0;
         o.DocumentSettings = s =>
         {
             s.Title = "Zayna Store";
             s.Description = "Zayna Store API for our new Store";
             s.Version = "v1";
 
-            s.AddAuth("Bearer", new OpenApiSecurityScheme
-            {
-                Type = OpenApiSecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
-                Description = "Enter your JWT token"
-            });
+            // s.AddAuth("Bearer", new OpenApiSecurityScheme
+            // {
+            //     Type = OpenApiSecuritySchemeType.Http,
+            //     Scheme = "bearer",
+            //     BearerFormat = "JWT",
+            //     Description = "Enter your JWT token"
+            // });
         };
     });
 
@@ -106,8 +107,16 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseFastEndpoints();
-app.UseSwaggerGen();
+app.UseFastEndpoints(config =>
+{
+    config.Endpoints.ShortNames = true;
+    config.Endpoints.PrefixNameWithFirstTag = true;
+    config.Errors.UseProblemDetails();
+});
+app.UseSwaggerGen(uiConfig: u =>
+{
+    u.ShowOperationIDs();
+});
 
 app.Run();
 

@@ -23,6 +23,7 @@ public class DeleteCategoryEndpoint : Endpoint<DeleteCategoryRequest>
     {
         Delete("/admin/categories/{id}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminCategories"));
 
         Summary(s =>
         {

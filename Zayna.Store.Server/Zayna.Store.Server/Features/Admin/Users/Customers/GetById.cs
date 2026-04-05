@@ -33,6 +33,7 @@ public class GetCustomerByIdEndpoint : Endpoint<GetCustomerByIdRequest, GetCusto
     {
         Get("/admin/users/customers/{id}");
         Roles(UserRoles.Admin);
+        Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>
         {
