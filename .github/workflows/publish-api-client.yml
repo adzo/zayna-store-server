@@ -51,8 +51,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@zayna'
 
       - name: Cache npm dependencies
         uses: actions/cache@v4
@@ -64,8 +62,6 @@ jobs:
 
       - name: Install npm dependencies
         working-directory: ./client-sdk
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm ci
 
       - name: Generate TypeScript client
