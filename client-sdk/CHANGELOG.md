@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/adzo/zayna-store-server/compare/v1.0.1...v1.0.2) (2026-04-06)
+
+
+### Bug Fixes
+
+* schema short names ([72a16ed](https://github.com/adzo/zayna-store-server/commit/72a16ed0ba7b8fae1451e8449e29b22c7b3b3098))
+
 ## [1.0.1](https://github.com/adzo/zayna-store-server/compare/v1.0.0...v1.0.1) (2026-04-06)
 
 
