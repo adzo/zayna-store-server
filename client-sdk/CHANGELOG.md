@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/adzo/zayna-store-server/compare/v1.0.2...v1.0.3) (2026-04-06)
+
+
+### Bug Fixes
+
+* fix endpoint tags for client generation ([f85f80b](https://github.com/adzo/zayna-store-server/commit/f85f80bcbeaf38cca0a6f388d17efc84d7d8ab32))
+
 ## [1.0.2](https://github.com/adzo/zayna-store-server/compare/v1.0.1...v1.0.2) (2026-04-06)
 
 
