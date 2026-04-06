@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/adzo/zayna-store-server/compare/v1.0.0...v1.0.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* fix npm package scope ([1abfcc5](https://github.com/adzo/zayna-store-server/commit/1abfcc514395cac55bd3d61b4c18fce5cace3301))
+
 # 1.0.0 (2026-04-06)
 
 
