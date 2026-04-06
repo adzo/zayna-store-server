@@ -23,6 +23,7 @@ public class DisableCouponEndpoint : Endpoint<DisableCouponRequest, CouponDto>
     {
         Put("/admin/coupons/{id}/disable");
         Roles(UserRoles.Admin);
+        Tags("AdminCoupons");
         Description(x => x.WithTags("AdminCoupons"));
 
         Summary(s =>

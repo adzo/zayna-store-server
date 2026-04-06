@@ -64,6 +64,7 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CreateCust
     {
         Post("/admin/users/customers");
         Roles(UserRoles.Admin);
+        Tags("AdminUsers");
         Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>

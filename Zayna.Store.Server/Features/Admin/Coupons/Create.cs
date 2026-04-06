@@ -86,6 +86,7 @@ public class CreateCouponEndpoint : Endpoint<CreateCouponRequest, CouponDto>
     {
         Post("/admin/coupons");
         Roles(UserRoles.Admin);
+        Tags("AdminCoupons");
         Description(x => x.WithTags("AdminCoupons"));
 
         Summary(s =>

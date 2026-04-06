@@ -68,6 +68,7 @@ public class UpdateCouponEndpoint : Endpoint<UpdateCouponRequest, CouponDto>
     {
         Put("/admin/coupons/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminCoupons");
         Description(x => x.WithTags("AdminCoupons"));
 
         Summary(s =>

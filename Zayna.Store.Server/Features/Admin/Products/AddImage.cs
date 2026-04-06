@@ -43,6 +43,7 @@ public class AddImageEndpoint : Endpoint<AddImageRequest, ProductImageDto>
     {
         Post("/admin/products/{productId}/images");
         Roles(UserRoles.Admin);
+        Tags("AdminProducts");
         Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>

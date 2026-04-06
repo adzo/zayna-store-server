@@ -38,6 +38,7 @@ public class UpdateCategoryEndpoint : Endpoint<UpdateCategoryRequest, CategoryDt
     {
         Put("/admin/categories/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminCategories");
         Description(x => x.WithTags("AdminCategories"));
 
         Summary(s =>

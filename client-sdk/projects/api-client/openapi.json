@@ -14,7 +14,7 @@
         ],
         "summary": "Retrieves active products with pagination (public)",
         "description": "Returns a paginated list of active products with main image only. Supports filtering by category and text search. No authentication required.",
-        "operationId": "GetPublicProductsEndpoint",
+        "operationId": "Products_GetPublicProductsEndpoint",
         "parameters": [
           {
             "name": "categoryId",

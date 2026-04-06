@@ -83,6 +83,7 @@ public class PlaceOrderEndpoint : Endpoint<PlaceOrderRequest, PlaceOrderResponse
     {
         Post("/orders");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Tags("Orders");
         Description(x => x.WithTags("Orders"));
 
         Summary(s =>

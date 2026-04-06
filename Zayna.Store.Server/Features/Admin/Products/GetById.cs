@@ -23,6 +23,7 @@ public class GetProductByIdEndpoint : Endpoint<GetProductByIdRequest, ProductDto
     {
         Get("/admin/products/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminProducts");
         Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>

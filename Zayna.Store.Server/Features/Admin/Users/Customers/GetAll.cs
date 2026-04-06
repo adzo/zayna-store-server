@@ -34,6 +34,7 @@ public class GetAllCustomersEndpoint : EndpointWithoutRequest<GetAllCustomersRes
     {
         Get("/admin/users/customers");
         Roles(UserRoles.Admin);
+        Tags("AdminUsers");
         Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>

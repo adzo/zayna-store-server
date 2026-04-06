@@ -23,6 +23,7 @@ public class GetAllCouponsEndpoint : EndpointWithoutRequest<GetAllCouponsRespons
     {
         Get("/admin/coupons");
         Roles(UserRoles.Admin);
+        Tags("AdminCoupons");
         Description(x => x.WithTags("AdminCoupons"));
 
         Summary(s =>

@@ -22,6 +22,7 @@ public class DeleteAdminEndpoint : Endpoint<DeleteAdminRequest>
     {
         Delete("/admin/users/admins/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminUsers");
         Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>

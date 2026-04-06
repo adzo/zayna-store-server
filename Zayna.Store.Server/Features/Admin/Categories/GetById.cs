@@ -23,6 +23,7 @@ public class GetCategoryByIdEndpoint : Endpoint<GetCategoryByIdRequest, Category
     {
         Get("/admin/categories/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminCategories");
         Description(x => x.WithTags("AdminCategories"));
 
         Summary(s =>

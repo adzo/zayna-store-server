@@ -23,6 +23,7 @@ public class GetCouponByIdEndpoint : Endpoint<GetCouponByIdRequest, CouponDto>
     {
         Get("/admin/coupons/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminCoupons");
         Description(x => x.WithTags("AdminCoupons"));
 
         Summary(s =>

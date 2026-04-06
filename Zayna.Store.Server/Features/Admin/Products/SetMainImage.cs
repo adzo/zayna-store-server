@@ -23,6 +23,7 @@ public class SetMainImageEndpoint : Endpoint<SetMainImageRequest, ProductImageDt
     {
         Put("/admin/products/images/{imageId}/set-main");
         Roles(UserRoles.Admin);
+        Tags("AdminProducts");
         Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>

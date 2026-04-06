@@ -23,6 +23,7 @@ public class EnableCouponEndpoint : Endpoint<EnableCouponRequest, CouponDto>
     {
         Put("/admin/coupons/{id}/enable");
         Roles(UserRoles.Admin);
+        Tags("AdminCoupons");
         Description(x => x.WithTags("AdminCoupons"));
 
         Summary(s =>

@@ -64,6 +64,7 @@ public class CreateAdminEndpoint : Endpoint<CreateAdminRequest, CreateAdminRespo
     {
         Post("/admin/users/admins");
         Roles(UserRoles.Admin);
+        Tags("AdminUsers");
         Description(x => x.WithTags("AdminUsers"));
 
         Summary(s =>

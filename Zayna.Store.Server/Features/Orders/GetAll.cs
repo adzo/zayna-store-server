@@ -37,6 +37,7 @@ public class GetAllMyOrdersEndpoint : EndpointWithoutRequest<GetAllMyOrdersRespo
     {
         Get("/orders");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Tags("Orders");
         Description(x => x.WithTags("Orders"));
 
         Summary(s =>

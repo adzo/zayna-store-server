@@ -56,6 +56,7 @@ public class ValidateCouponEndpoint : Endpoint<ValidateCouponRequest, ValidateCo
     {
         Post("/coupons/validate");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Tags("Coupons");
         Description(x => x.WithTags("Coupons"));
 
         Summary(s =>

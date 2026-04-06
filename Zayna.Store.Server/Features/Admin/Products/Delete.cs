@@ -23,6 +23,7 @@ public class DeleteProductEndpoint : Endpoint<DeleteProductRequest>
     {
         Delete("/admin/products/{id}");
         Roles(UserRoles.Admin);
+        Tags("AdminProducts");
         Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>

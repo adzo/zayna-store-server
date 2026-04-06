@@ -53,6 +53,7 @@ public class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, RefreshTokenRe
     {
         Post("/auth/refresh");
         AllowAnonymous();
+        Tags("Auth");
         Description(x => x.WithTags("Auth"));
 
         Summary(s =>

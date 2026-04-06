@@ -88,6 +88,7 @@ public class CreateProductEndpoint : Endpoint<CreateProductRequest, ProductDto>
     {
         Post("/admin/products");
         Roles(UserRoles.Admin);
+        Tags("AdminProducts");
         Description(x => x.WithTags("AdminProducts"));
 
         Summary(s =>

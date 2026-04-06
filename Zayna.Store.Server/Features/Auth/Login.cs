@@ -69,6 +69,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     {
         Post("/auth/login");
         AllowAnonymous();
+        Tags("Auth");
         Description(x => x.WithTags("Auth"));
 
         Summary(s =>

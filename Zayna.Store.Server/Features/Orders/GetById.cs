@@ -49,6 +49,7 @@ public class GetMyOrderByIdEndpoint : Endpoint<GetMyOrderByIdRequest, GetMyOrder
     {
         Get("/orders/{id}");
         Roles(UserRoles.Admin, UserRoles.Customer);
+        Tags("Orders");
         Description(x => x.WithTags("Orders"));
 
         Summary(s =>
