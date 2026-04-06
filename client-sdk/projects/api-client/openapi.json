@@ -7,7 +7,7 @@
     "version": "v1"
   },
   "paths": {
-    "/products": {
+    "/api/products": {
       "get": {
         "tags": [
           "Products"
@@ -58,7 +58,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsGetPublicProductsResponse"
+                  "$ref": "#/components/schemas/GetPublicProductsResponse"
                 }
               }
             }
@@ -66,7 +66,7 @@
         }
       }
     },
-    "/products/{id}": {
+    "/api/products/{id}": {
       "get": {
         "tags": [
           "Products"
@@ -91,7 +91,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsPublicProductDetailDto"
+                  "$ref": "#/components/schemas/PublicProductDetailDto"
                 }
               }
             }
@@ -101,7 +101,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -109,7 +109,7 @@
         }
       }
     },
-    "/categories": {
+    "/api/categories": {
       "get": {
         "tags": [
           "Categories"
@@ -123,7 +123,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicCategoriesGetPublicCategoriesResponse"
+                  "$ref": "#/components/schemas/GetPublicCategoriesResponse"
                 }
               }
             }
@@ -131,7 +131,7 @@
         }
       }
     },
-    "/orders": {
+    "/api/orders": {
       "get": {
         "tags": [
           "Orders"
@@ -145,7 +145,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersGetAllMyOrdersResponse"
+                  "$ref": "#/components/schemas/GetAllMyOrdersResponse"
                 }
               }
             }
@@ -155,7 +155,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -186,7 +186,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersPlaceOrderRequest"
+                "$ref": "#/components/schemas/PlaceOrderRequest"
               }
             }
           },
@@ -199,7 +199,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersPlaceOrderResponse"
+                  "$ref": "#/components/schemas/PlaceOrderResponse"
                 }
               }
             }
@@ -209,7 +209,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -219,7 +219,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -238,7 +238,7 @@
         ]
       }
     },
-    "/orders/{id}": {
+    "/api/orders/{id}": {
       "get": {
         "tags": [
           "Orders"
@@ -263,7 +263,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersGetMyOrderByIdResponse"
+                  "$ref": "#/components/schemas/GetMyOrderByIdResponse"
                 }
               }
             }
@@ -273,7 +273,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -283,7 +283,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -293,7 +293,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -309,7 +309,7 @@
         ]
       }
     },
-    "/coupons/validate": {
+    "/api/coupons/validate": {
       "post": {
         "tags": [
           "Coupons"
@@ -323,7 +323,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesCouponsValidateCouponRequest"
+                "$ref": "#/components/schemas/ValidateCouponRequest"
               }
             }
           },
@@ -336,7 +336,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesCouponsValidateCouponResponse"
+                  "$ref": "#/components/schemas/ValidateCouponResponse"
                 }
               }
             }
@@ -346,7 +346,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -356,7 +356,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -375,7 +375,7 @@
         ]
       }
     },
-    "/auth/login": {
+    "/api/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -389,7 +389,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthLoginRequest"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           },
@@ -402,7 +402,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthLoginResponse"
+                  "$ref": "#/components/schemas/LoginResponse"
                 }
               }
             }
@@ -412,7 +412,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -422,7 +422,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -430,7 +430,7 @@
         }
       }
     },
-    "/auth/refresh": {
+    "/api/auth/refresh": {
       "post": {
         "tags": [
           "Auth"
@@ -444,7 +444,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthRefreshTokenRequest"
+                "$ref": "#/components/schemas/RefreshTokenRequest"
               }
             }
           },
@@ -457,7 +457,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthRefreshTokenResponse"
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
                 }
               }
             }
@@ -467,7 +467,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -477,7 +477,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -485,7 +485,7 @@
         }
       }
     },
-    "/admin/users/customers": {
+    "/api/admin/users/customers": {
       "post": {
         "tags": [
           "AdminUsers"
@@ -499,7 +499,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerRequest"
+                "$ref": "#/components/schemas/CreateCustomerRequest"
               }
             }
           },
@@ -512,7 +512,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerResponse"
+                  "$ref": "#/components/schemas/CreateCustomerResponse"
                 }
               }
             }
@@ -522,7 +522,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -532,7 +532,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -542,7 +542,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -569,7 +569,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersGetAllCustomersResponse"
+                  "$ref": "#/components/schemas/GetAllCustomersResponse"
                 }
               }
             }
@@ -579,7 +579,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -589,7 +589,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -604,7 +604,7 @@
         ]
       }
     },
-    "/admin/users/customers/{id}": {
+    "/api/admin/users/customers/{id}": {
       "delete": {
         "tags": [
           "AdminUsers"
@@ -631,7 +631,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -641,7 +641,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -651,7 +651,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -661,7 +661,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -698,7 +698,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersGetCustomerByIdResponse"
+                  "$ref": "#/components/schemas/GetCustomerByIdResponse"
                 }
               }
             }
@@ -708,7 +708,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -718,7 +718,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -728,7 +728,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -765,7 +765,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerRequest"
+                "$ref": "#/components/schemas/UpdateCustomerRequest"
               }
             }
           },
@@ -778,7 +778,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerResponse"
+                  "$ref": "#/components/schemas/UpdateCustomerResponse"
                 }
               }
             }
@@ -788,7 +788,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -798,7 +798,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -808,7 +808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -818,7 +818,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -833,7 +833,7 @@
         ]
       }
     },
-    "/admin/users/admins": {
+    "/api/admin/users/admins": {
       "post": {
         "tags": [
           "AdminUsers"
@@ -847,7 +847,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminRequest"
+                "$ref": "#/components/schemas/CreateAdminRequest"
               }
             }
           },
@@ -860,7 +860,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminResponse"
+                  "$ref": "#/components/schemas/CreateAdminResponse"
                 }
               }
             }
@@ -870,7 +870,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -880,7 +880,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -890,7 +890,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -917,7 +917,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsGetAllAdminsResponse"
+                  "$ref": "#/components/schemas/GetAllAdminsResponse"
                 }
               }
             }
@@ -927,7 +927,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -937,7 +937,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -952,7 +952,7 @@
         ]
       }
     },
-    "/admin/users/admins/{id}": {
+    "/api/admin/users/admins/{id}": {
       "delete": {
         "tags": [
           "AdminUsers"
@@ -979,7 +979,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -989,7 +989,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -999,7 +999,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1009,7 +1009,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1046,7 +1046,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsGetAdminByIdResponse"
+                  "$ref": "#/components/schemas/GetAdminByIdResponse"
                 }
               }
             }
@@ -1056,7 +1056,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1066,7 +1066,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1076,7 +1076,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1113,7 +1113,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminRequest"
+                "$ref": "#/components/schemas/UpdateAdminRequest"
               }
             }
           },
@@ -1126,7 +1126,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminResponse"
+                  "$ref": "#/components/schemas/UpdateAdminResponse"
                 }
               }
             }
@@ -1136,7 +1136,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1146,7 +1146,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1156,7 +1156,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1166,7 +1166,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1181,7 +1181,7 @@
         ]
       }
     },
-    "/admin/products/{productId}/images": {
+    "/api/admin/products/{productId}/images": {
       "post": {
         "tags": [
           "AdminProducts"
@@ -1206,7 +1206,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsAddImageRequest"
+                "$ref": "#/components/schemas/AddImageRequest"
               }
             }
           },
@@ -1219,7 +1219,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageDto"
+                  "$ref": "#/components/schemas/ProductImageDto"
                 }
               }
             }
@@ -1229,7 +1229,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1239,7 +1239,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1249,7 +1249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1259,7 +1259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1274,7 +1274,7 @@
         ]
       }
     },
-    "/admin/products": {
+    "/api/admin/products": {
       "post": {
         "tags": [
           "AdminProducts"
@@ -1288,7 +1288,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsCreateProductRequest"
+                "$ref": "#/components/schemas/CreateProductRequest"
               }
             }
           },
@@ -1301,7 +1301,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+                  "$ref": "#/components/schemas/ProductDto"
                 }
               }
             }
@@ -1311,7 +1311,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1321,7 +1321,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1331,7 +1331,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1358,7 +1358,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsGetAllProductsResponse"
+                  "$ref": "#/components/schemas/GetAllProductsResponse"
                 }
               }
             }
@@ -1368,7 +1368,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1378,7 +1378,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1393,7 +1393,7 @@
         ]
       }
     },
-    "/admin/products/{id}": {
+    "/api/admin/products/{id}": {
       "delete": {
         "tags": [
           "AdminProducts"
@@ -1421,7 +1421,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1431,7 +1431,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1441,7 +1441,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1479,7 +1479,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+                  "$ref": "#/components/schemas/ProductDto"
                 }
               }
             }
@@ -1489,7 +1489,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1499,7 +1499,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1509,7 +1509,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1547,7 +1547,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsUpdateProductRequest"
+                "$ref": "#/components/schemas/UpdateProductRequest"
               }
             }
           },
@@ -1560,7 +1560,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+                  "$ref": "#/components/schemas/ProductDto"
                 }
               }
             }
@@ -1570,7 +1570,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1580,7 +1580,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1590,7 +1590,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1600,7 +1600,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1615,7 +1615,7 @@
         ]
       }
     },
-    "/admin/products/images/{imageId}": {
+    "/api/admin/products/images/{imageId}": {
       "delete": {
         "tags": [
           "AdminProducts"
@@ -1643,7 +1643,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1653,7 +1653,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1663,7 +1663,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1673,7 +1673,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1688,7 +1688,7 @@
         ]
       }
     },
-    "/admin/products/images/{imageId}/set-main": {
+    "/api/admin/products/images/{imageId}/set-main": {
       "put": {
         "tags": [
           "AdminProducts"
@@ -1713,7 +1713,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageDto"
+                  "$ref": "#/components/schemas/ProductImageDto"
                 }
               }
             }
@@ -1723,7 +1723,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1733,7 +1733,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1743,7 +1743,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1758,7 +1758,7 @@
         ]
       }
     },
-    "/admin/orders": {
+    "/api/admin/orders": {
       "get": {
         "tags": [
           "AdminOrders"
@@ -1772,7 +1772,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersGetAllOrdersResponse"
+                  "$ref": "#/components/schemas/GetAllOrdersResponse"
                 }
               }
             }
@@ -1782,7 +1782,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1792,7 +1792,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1807,7 +1807,7 @@
         ]
       }
     },
-    "/admin/orders/{id}": {
+    "/api/admin/orders/{id}": {
       "get": {
         "tags": [
           "AdminOrders"
@@ -1832,7 +1832,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersGetOrderByIdResponse"
+                  "$ref": "#/components/schemas/GetOrderByIdResponse"
                 }
               }
             }
@@ -1842,7 +1842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1852,7 +1852,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1862,7 +1862,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1877,7 +1877,7 @@
         ]
       }
     },
-    "/admin/orders/{id}/status": {
+    "/api/admin/orders/{id}/status": {
       "put": {
         "tags": [
           "AdminOrders"
@@ -1902,7 +1902,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusRequest"
+                "$ref": "#/components/schemas/UpdateOrderStatusRequest"
               }
             }
           },
@@ -1915,7 +1915,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusResponse"
+                  "$ref": "#/components/schemas/UpdateOrderStatusResponse"
                 }
               }
             }
@@ -1925,7 +1925,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1935,7 +1935,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1945,7 +1945,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1955,7 +1955,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1970,7 +1970,7 @@
         ]
       }
     },
-    "/admin/coupons": {
+    "/api/admin/coupons": {
       "post": {
         "tags": [
           "AdminCoupons"
@@ -1984,7 +1984,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCreateCouponRequest"
+                "$ref": "#/components/schemas/CreateCouponRequest"
               }
             }
           },
@@ -1997,7 +1997,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                  "$ref": "#/components/schemas/CouponDto"
                 }
               }
             }
@@ -2007,7 +2007,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2017,7 +2017,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2027,7 +2027,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2054,7 +2054,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsGetAllCouponsResponse"
+                  "$ref": "#/components/schemas/GetAllCouponsResponse"
                 }
               }
             }
@@ -2064,7 +2064,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2074,7 +2074,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2089,7 +2089,7 @@
         ]
       }
     },
-    "/admin/coupons/{id}/disable": {
+    "/api/admin/coupons/{id}/disable": {
       "put": {
         "tags": [
           "AdminCoupons"
@@ -2114,7 +2114,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                  "$ref": "#/components/schemas/CouponDto"
                 }
               }
             }
@@ -2124,7 +2124,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2134,7 +2134,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2144,7 +2144,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2159,7 +2159,7 @@
         ]
       }
     },
-    "/admin/coupons/{id}/enable": {
+    "/api/admin/coupons/{id}/enable": {
       "put": {
         "tags": [
           "AdminCoupons"
@@ -2184,7 +2184,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                  "$ref": "#/components/schemas/CouponDto"
                 }
               }
             }
@@ -2194,7 +2194,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2204,7 +2204,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2214,7 +2214,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2229,7 +2229,7 @@
         ]
       }
     },
-    "/admin/coupons/{id}": {
+    "/api/admin/coupons/{id}": {
       "get": {
         "tags": [
           "AdminCoupons"
@@ -2254,7 +2254,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                  "$ref": "#/components/schemas/CouponDto"
                 }
               }
             }
@@ -2264,7 +2264,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2274,7 +2274,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2284,7 +2284,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2322,7 +2322,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsUpdateCouponRequest"
+                "$ref": "#/components/schemas/UpdateCouponRequest"
               }
             }
           },
@@ -2335,7 +2335,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+                  "$ref": "#/components/schemas/CouponDto"
                 }
               }
             }
@@ -2345,7 +2345,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2355,7 +2355,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2365,7 +2365,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2375,7 +2375,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2390,7 +2390,7 @@
         ]
       }
     },
-    "/admin/categories": {
+    "/api/admin/categories": {
       "post": {
         "tags": [
           "AdminCategories"
@@ -2404,7 +2404,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCreateCategoryRequest"
+                "$ref": "#/components/schemas/CreateCategoryRequest"
               }
             }
           },
@@ -2417,7 +2417,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCategoryDto"
+                  "$ref": "#/components/schemas/CategoryDto"
                 }
               }
             }
@@ -2427,7 +2427,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2437,7 +2437,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2447,7 +2447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2474,7 +2474,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesGetAllCategoriesResponse"
+                  "$ref": "#/components/schemas/GetAllCategoriesResponse"
                 }
               }
             }
@@ -2484,7 +2484,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2494,7 +2494,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2509,7 +2509,7 @@
         ]
       }
     },
-    "/admin/categories/{id}": {
+    "/api/admin/categories/{id}": {
       "delete": {
         "tags": [
           "AdminCategories"
@@ -2537,7 +2537,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2547,7 +2547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2557,7 +2557,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2567,7 +2567,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2605,7 +2605,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCategoryDto"
+                  "$ref": "#/components/schemas/CategoryDto"
                 }
               }
             }
@@ -2615,7 +2615,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2625,7 +2625,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2635,7 +2635,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2673,7 +2673,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesUpdateCategoryRequest"
+                "$ref": "#/components/schemas/UpdateCategoryRequest"
               }
             }
           },
@@ -2686,7 +2686,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCategoriesCategoryDto"
+                  "$ref": "#/components/schemas/CategoryDto"
                 }
               }
             }
@@ -2696,7 +2696,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2706,7 +2706,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2716,7 +2716,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2726,7 +2726,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FastEndpointsProblemDetails"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2744,14 +2744,14 @@
   },
   "components": {
     "schemas": {
-      "ZaynaStoreServerFeaturesPublicProductsGetPublicProductsResponse": {
+      "GetPublicProductsResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "products": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsPublicProductListDto"
+              "$ref": "#/components/schemas/PublicProductListDto"
             }
           },
           "totalCount": {
@@ -2772,7 +2772,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesPublicProductsPublicProductListDto": {
+      "PublicProductListDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2800,11 +2800,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesPublicProductsGetPublicProductsRequest": {
+      "GetPublicProductsRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesPublicProductsPublicProductDetailDto": {
+      "PublicProductDetailDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2832,7 +2832,7 @@
           "images": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicProductsPublicProductImageDto"
+              "$ref": "#/components/schemas/PublicProductImageDto"
             }
           },
           "createdAt": {
@@ -2841,7 +2841,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesPublicProductsPublicProductImageDto": {
+      "PublicProductImageDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2861,11 +2861,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesPublicProductsGetPublicProductByIdRequest": {
+      "GetPublicProductByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "FastEndpointsProblemDetails": {
+      "ProblemDetails": {
         "type": "object",
         "description": "RFC7807 compatible problem details/ error response class. this can be used by configuring startup like so:\napp.UseFastEndpoints(c => c.Errors.UseProblemDetails())",
         "additionalProperties": false,
@@ -2899,12 +2899,12 @@
           "errors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FastEndpointsProblemDetails_Error"
+              "$ref": "#/components/schemas/ProblemDetails_Error"
             }
           }
         }
       },
-      "FastEndpointsProblemDetails_Error": {
+      "ProblemDetails_Error": {
         "type": "object",
         "description": "the error details object",
         "additionalProperties": false,
@@ -2931,19 +2931,19 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesPublicCategoriesGetPublicCategoriesResponse": {
+      "GetPublicCategoriesResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "categories": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesPublicCategoriesPublicCategoryDto"
+              "$ref": "#/components/schemas/PublicCategoryDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesPublicCategoriesPublicCategoryDto": {
+      "PublicCategoryDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2956,19 +2956,19 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersGetAllMyOrdersResponse": {
+      "GetAllMyOrdersResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "orders": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersMyOrderDto"
+              "$ref": "#/components/schemas/MyOrderDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersMyOrderDto": {
+      "MyOrderDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2984,7 +2984,7 @@
             "format": "date-time"
           },
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           },
           "totalAmount": {
             "type": "number",
@@ -3009,7 +3009,7 @@
           }
         }
       },
-      "ZaynaStoreServerEntitiesOrderStatus": {
+      "OrderStatus": {
         "type": "integer",
         "description": "",
         "x-enumNames": [
@@ -3027,7 +3027,7 @@
           4
         ]
       },
-      "ZaynaStoreServerFeaturesOrdersGetMyOrderByIdResponse": {
+      "GetMyOrderByIdResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3043,7 +3043,7 @@
             "format": "date-time"
           },
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           },
           "subTotal": {
             "type": "number",
@@ -3077,12 +3077,12 @@
           "orderItems": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersMyOrderItemDto"
+              "$ref": "#/components/schemas/MyOrderItemDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersMyOrderItemDto": {
+      "MyOrderItemDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3111,11 +3111,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersGetMyOrderByIdRequest": {
+      "GetMyOrderByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesOrdersPlaceOrderResponse": {
+      "PlaceOrderResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3131,7 +3131,7 @@
             "format": "date-time"
           },
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           },
           "subTotal": {
             "type": "number",
@@ -3155,12 +3155,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersPlacedOrderItemDto"
+              "$ref": "#/components/schemas/PlacedOrderItemDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersPlacedOrderItemDto": {
+      "PlacedOrderItemDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3185,7 +3185,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersPlaceOrderRequest": {
+      "PlaceOrderRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3204,7 +3204,7 @@
             "minLength": 1,
             "nullable": false,
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesOrdersOrderItemRequest"
+              "$ref": "#/components/schemas/OrderItemRequest"
             }
           },
           "couponCode": {
@@ -3213,7 +3213,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesOrdersOrderItemRequest": {
+      "OrderItemRequest": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3227,7 +3227,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesCouponsValidateCouponResponse": {
+      "ValidateCouponResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3241,13 +3241,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/ZaynaStoreServerFeaturesCouponsCouponValidationDto"
+                "$ref": "#/components/schemas/CouponValidationDto"
               }
             ]
           }
         }
       },
-      "ZaynaStoreServerFeaturesCouponsCouponValidationDto": {
+      "CouponValidationDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3259,7 +3259,7 @@
             "type": "string"
           },
           "discountType": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+            "$ref": "#/components/schemas/DiscountType"
           },
           "discountValue": {
             "type": "number",
@@ -3275,7 +3275,7 @@
           }
         }
       },
-      "ZaynaStoreServerEntitiesDiscountType": {
+      "DiscountType": {
         "type": "integer",
         "description": "",
         "x-enumNames": [
@@ -3287,7 +3287,7 @@
           1
         ]
       },
-      "ZaynaStoreServerFeaturesCouponsValidateCouponRequest": {
+      "ValidateCouponRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3307,7 +3307,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAuthLoginResponse": {
+      "LoginResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3325,11 +3325,11 @@
             "type": "string"
           },
           "user": {
-            "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAuthUserDto"
+            "$ref": "#/components/schemas/UserDto"
           }
         }
       },
-      "ZaynaStoreServerFeaturesAuthUserDto": {
+      "UserDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3353,7 +3353,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAuthLoginRequest": {
+      "LoginRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3375,7 +3375,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAuthRefreshTokenResponse": {
+      "RefreshTokenResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3394,7 +3394,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAuthRefreshTokenRequest": {
+      "RefreshTokenRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3408,7 +3408,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerResponse": {
+      "CreateCustomerResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3436,7 +3436,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersCreateCustomerRequest": {
+      "CreateCustomerRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3482,23 +3482,23 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersDeleteCustomerRequest": {
+      "DeleteCustomerRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersGetAllCustomersResponse": {
+      "GetAllCustomersResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "customers": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersCustomersCustomerDto"
+              "$ref": "#/components/schemas/CustomerDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersCustomerDto": {
+      "CustomerDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3526,7 +3526,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersGetCustomerByIdResponse": {
+      "GetCustomerByIdResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3554,11 +3554,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersGetCustomerByIdRequest": {
+      "GetCustomerByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerResponse": {
+      "UpdateCustomerResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3586,7 +3586,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersCustomersUpdateCustomerRequest": {
+      "UpdateCustomerRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3626,7 +3626,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminResponse": {
+      "CreateAdminResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3654,7 +3654,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsCreateAdminRequest": {
+      "CreateAdminRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3700,23 +3700,23 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsDeleteAdminRequest": {
+      "DeleteAdminRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsGetAllAdminsResponse": {
+      "GetAllAdminsResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "admins": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminUsersAdminsAdminDto"
+              "$ref": "#/components/schemas/AdminDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsAdminDto": {
+      "AdminDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3744,7 +3744,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsGetAdminByIdResponse": {
+      "GetAdminByIdResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3772,11 +3772,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsGetAdminByIdRequest": {
+      "GetAdminByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminResponse": {
+      "UpdateAdminResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3804,7 +3804,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminUsersAdminsUpdateAdminRequest": {
+      "UpdateAdminRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3844,7 +3844,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsProductImageDto": {
+      "ProductImageDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3864,7 +3864,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsAddImageRequest": {
+      "AddImageRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3887,7 +3887,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsProductDto": {
+      "ProductDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3922,7 +3922,7 @@
           "images": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageDto"
+              "$ref": "#/components/schemas/ProductImageDto"
             }
           },
           "createdAt": {
@@ -3936,7 +3936,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsCreateProductRequest": {
+      "CreateProductRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3978,12 +3978,12 @@
             "minLength": 1,
             "nullable": false,
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductImageInput"
+              "$ref": "#/components/schemas/ProductImageInput"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsProductImageInput": {
+      "ProductImageInput": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3999,35 +3999,35 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsDeleteProductRequest": {
+      "DeleteProductRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminProductsDeleteImageRequest": {
+      "DeleteImageRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminProductsGetAllProductsResponse": {
+      "GetAllProductsResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "products": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminProductsProductDto"
+              "$ref": "#/components/schemas/ProductDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminProductsGetProductByIdRequest": {
+      "GetProductByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminProductsSetMainImageRequest": {
+      "SetMainImageRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminProductsUpdateProductRequest": {
+      "UpdateProductRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -4065,19 +4065,19 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminOrdersGetAllOrdersResponse": {
+      "GetAllOrdersResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "orders": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersOrderDto"
+              "$ref": "#/components/schemas/OrderDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminOrdersOrderDto": {
+      "OrderDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4102,7 +4102,7 @@
             "format": "date-time"
           },
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           },
           "totalAmount": {
             "type": "number",
@@ -4127,7 +4127,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminOrdersGetOrderByIdResponse": {
+      "GetOrderByIdResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4155,7 +4155,7 @@
             "format": "date-time"
           },
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           },
           "subTotal": {
             "type": "number",
@@ -4189,12 +4189,12 @@
           "orderItems": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminOrdersOrderItemDto"
+              "$ref": "#/components/schemas/OrderItemDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminOrdersOrderItemDto": {
+      "OrderItemDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4223,11 +4223,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminOrdersGetOrderByIdRequest": {
+      "GetOrderByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusResponse": {
+      "UpdateOrderStatusResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4239,7 +4239,7 @@
             "type": "string"
           },
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           },
           "shippedDate": {
             "type": "string",
@@ -4253,16 +4253,16 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminOrdersUpdateOrderStatusRequest": {
+      "UpdateOrderStatusRequest": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesOrderStatus"
+            "$ref": "#/components/schemas/OrderStatus"
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCouponsCouponDto": {
+      "CouponDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4274,7 +4274,7 @@
             "type": "string"
           },
           "discountType": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+            "$ref": "#/components/schemas/DiscountType"
           },
           "discountValue": {
             "type": "number",
@@ -4316,7 +4316,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCouponsCreateCouponRequest": {
+      "CreateCouponRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -4333,7 +4333,7 @@
             "nullable": false
           },
           "discountType": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+            "$ref": "#/components/schemas/DiscountType"
           },
           "discountValue": {
             "type": "number",
@@ -4370,31 +4370,31 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCouponsDisableCouponRequest": {
+      "DisableCouponRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminCouponsEnableCouponRequest": {
+      "EnableCouponRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminCouponsGetAllCouponsResponse": {
+      "GetAllCouponsResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "coupons": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerFeaturesAdminCouponsCouponDto"
+              "$ref": "#/components/schemas/CouponDto"
             }
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCouponsGetCouponByIdRequest": {
+      "GetCouponByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminCouponsUpdateCouponRequest": {
+      "UpdateCouponRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -4403,7 +4403,7 @@
         ],
         "properties": {
           "discountType": {
-            "$ref": "#/components/schemas/ZaynaStoreServerEntitiesDiscountType"
+            "$ref": "#/components/schemas/DiscountType"
           },
           "discountValue": {
             "type": "number",
@@ -4440,7 +4440,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCategoriesCategoryDto": {
+      "CategoryDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4465,7 +4465,7 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCategoriesCreateCategoryRequest": {
+      "CreateCategoryRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -4484,23 +4484,23 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCategoriesDeleteCategoryRequest": {
+      "DeleteCategoryRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminCategoriesGetAllCategoriesResponse": {
+      "GetAllCategoriesResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "categories": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ZaynaStoreServerModelsMinimalItem"
+              "$ref": "#/components/schemas/MinimalItem"
             }
           }
         }
       },
-      "ZaynaStoreServerModelsMinimalItem": {
+      "MinimalItem": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -4513,11 +4513,11 @@
           }
         }
       },
-      "ZaynaStoreServerFeaturesAdminCategoriesGetCategoryByIdRequest": {
+      "GetCategoryByIdRequest": {
         "type": "object",
         "additionalProperties": false
       },
-      "ZaynaStoreServerFeaturesAdminCategoriesUpdateCategoryRequest": {
+      "UpdateCategoryRequest": {
         "type": "object",
         "additionalProperties": false,
         "required": [
