@@ -73,7 +73,7 @@
         ],
         "summary": "Retrieves product details by ID (public)",
         "description": "Returns full product details including all images and category information. Only returns active products. No authentication required.",
-        "operationId": "GetPublicProductByIdEndpoint",
+        "operationId": "Products_GetPublicProductByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -116,7 +116,7 @@
         ],
         "summary": "Retrieves all product categories (public)",
         "description": "Returns a minimal list of all categories (ID and name only) for public browsing. No authentication required.",
-        "operationId": "GetPublicCategoriesEndpoint",
+        "operationId": "Categories_GetPublicCategoriesEndpoint",
         "responses": {
           "200": {
             "description": "List of categories retrieved successfully",
@@ -138,7 +138,7 @@
         ],
         "summary": "Retrieves all orders for authenticated user",
         "description": "Returns a list of all orders placed by the authenticated user. Only shows orders belonging to the current user.",
-        "operationId": "GetAllMyOrdersEndpoint",
+        "operationId": "Orders_GetAllMyOrdersEndpoint",
         "responses": {
           "200": {
             "description": "List of orders retrieved successfully",
@@ -179,7 +179,7 @@
         ],
         "summary": "Place a new order",
         "description": "Creates a new order for the authenticated user. Validates product availability, applies coupon discount if provided, and calculates total amount. Accessible by both customers and admins.",
-        "operationId": "PlaceOrderEndpoint",
+        "operationId": "Orders_PlaceOrderEndpoint",
         "requestBody": {
           "x-name": "PlaceOrderRequest",
           "description": "",
@@ -245,7 +245,7 @@
         ],
         "summary": "Retrieves order details by ID",
         "description": "Returns full order details including order items. Users can only access their own orders.",
-        "operationId": "GetMyOrderByIdEndpoint",
+        "operationId": "Orders_GetMyOrderByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -316,7 +316,7 @@
         ],
         "summary": "Validates a coupon code",
         "description": "Checks if a coupon code is valid for the authenticated user and calculates the discount amount. Returns validation status, discount details, and final order total.",
-        "operationId": "ValidateCouponEndpoint",
+        "operationId": "Coupons_ValidateCouponEndpoint",
         "requestBody": {
           "x-name": "ValidateCouponRequest",
           "description": "",
@@ -382,7 +382,7 @@
         ],
         "summary": "Authenticates a user and returns JWT tokens",
         "description": "Validates user credentials and returns an access token (30 minutes) and refresh token (15 days) along with user information and roles. Publicly accessible.",
-        "operationId": "LoginEndpoint",
+        "operationId": "Auth_LoginEndpoint",
         "requestBody": {
           "x-name": "LoginRequest",
           "description": "",
@@ -437,7 +437,7 @@
         ],
         "summary": "Refreshes an expired access token",
         "description": "Exchanges a valid refresh token for a new access token and refresh token. The old refresh token is revoked (single-use). Publicly accessible.",
-        "operationId": "RefreshTokenEndpoint",
+        "operationId": "Auth_RefreshTokenEndpoint",
         "requestBody": {
           "x-name": "RefreshTokenRequest",
           "description": "",
@@ -492,7 +492,7 @@
         ],
         "summary": "Creates a new customer user account",
         "description": "Creates a new customer user with the provided details and assigns the Customer role. Only accessible by administrators.",
-        "operationId": "CreateCustomerEndpoint",
+        "operationId": "AdminUsers_CreateCustomerEndpoint",
         "requestBody": {
           "x-name": "CreateCustomerRequest",
           "description": "",
@@ -562,7 +562,7 @@
         ],
         "summary": "Retrieves all customer users",
         "description": "Returns a list of all users with the Customer role. Only accessible by administrators.",
-        "operationId": "GetAllCustomersEndpoint",
+        "operationId": "AdminUsers_GetAllCustomersEndpoint",
         "responses": {
           "200": {
             "description": "List of customers retrieved successfully",
@@ -611,7 +611,7 @@
         ],
         "summary": "Soft deletes a customer user",
         "description": "Marks a customer user as deleted without permanently removing the record. Only accessible by administrators.",
-        "operationId": "DeleteCustomerEndpoint",
+        "operationId": "AdminUsers_DeleteCustomerEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -681,7 +681,7 @@
         ],
         "summary": "Retrieves a customer user by ID",
         "description": "Returns detailed information about a specific customer user. Only accessible by administrators.",
-        "operationId": "GetCustomerByIdEndpoint",
+        "operationId": "AdminUsers_GetCustomerByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -748,7 +748,7 @@
         ],
         "summary": "Updates an existing customer user",
         "description": "Updates the details of a customer user account. Only accessible by administrators.",
-        "operationId": "UpdateCustomerEndpoint",
+        "operationId": "AdminUsers_UpdateCustomerEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -840,7 +840,7 @@
         ],
         "summary": "Creates a new administrator user account",
         "description": "Creates a new user with the provided details and assigns the Admin role. Only accessible by existing administrators.",
-        "operationId": "CreateAdminEndpoint",
+        "operationId": "AdminUsers_CreateAdminEndpoint",
         "requestBody": {
           "x-name": "CreateAdminRequest",
           "description": "",
@@ -910,7 +910,7 @@
         ],
         "summary": "Retrieves all administrator users",
         "description": "Returns a list of all users with the Admin role. Only accessible by administrators.",
-        "operationId": "GetAllAdminsEndpoint",
+        "operationId": "AdminUsers_GetAllAdminsEndpoint",
         "responses": {
           "200": {
             "description": "List of admins retrieved successfully",
@@ -959,7 +959,7 @@
         ],
         "summary": "Soft deletes an administrator user",
         "description": "Marks an administrator user as deleted without permanently removing the record. Only accessible by administrators.",
-        "operationId": "DeleteAdminEndpoint",
+        "operationId": "AdminUsers_DeleteAdminEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1029,7 +1029,7 @@
         ],
         "summary": "Retrieves an administrator user by ID",
         "description": "Returns detailed information about a specific administrator user. Only accessible by administrators.",
-        "operationId": "GetAdminByIdEndpoint",
+        "operationId": "AdminUsers_GetAdminByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1096,7 +1096,7 @@
         ],
         "summary": "Updates an existing administrator user",
         "description": "Updates the details of an administrator user account. Only accessible by administrators.",
-        "operationId": "UpdateAdminEndpoint",
+        "operationId": "AdminUsers_UpdateAdminEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1188,7 +1188,7 @@
         ],
         "summary": "Adds an image to a product",
         "description": "Adds a new image to an existing product. If marked as main, automatically unsets other main images. Only accessible by administrators.",
-        "operationId": "AddImageEndpoint",
+        "operationId": "AdminProducts_AddImageEndpoint",
         "parameters": [
           {
             "name": "productId",
@@ -1281,7 +1281,7 @@
         ],
         "summary": "Creates a new product with images",
         "description": "Creates a new product with multiple images. At least one image is required and exactly one must be marked as main. Only accessible by administrators.",
-        "operationId": "CreateProductEndpoint",
+        "operationId": "AdminProducts_CreateProductEndpoint",
         "requestBody": {
           "x-name": "CreateProductRequest",
           "description": "",
@@ -1351,7 +1351,7 @@
         ],
         "summary": "Retrieves all products",
         "description": "Returns a list of all products with full details including all images and category information. Only accessible by administrators.",
-        "operationId": "GetAllProductsEndpoint",
+        "operationId": "AdminProducts_GetAllProductsEndpoint",
         "responses": {
           "200": {
             "description": "List of products retrieved successfully",
@@ -1400,7 +1400,7 @@
         ],
         "summary": "Deletes a product",
         "description": "Permanently deletes a product and all associated images. Only accessible by administrators.",
-        "operationId": "DeleteProductEndpoint",
+        "operationId": "AdminProducts_DeleteProductEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1461,7 +1461,7 @@
         ],
         "summary": "Retrieves a product by ID",
         "description": "Returns detailed information about a specific product including all images and category. Only accessible by administrators.",
-        "operationId": "GetProductByIdEndpoint",
+        "operationId": "AdminProducts_GetProductByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1529,7 +1529,7 @@
         ],
         "summary": "Updates an existing product",
         "description": "Updates product details (name, description, price, stock, category, active status). Images are managed separately via image endpoints. Only accessible by administrators.",
-        "operationId": "UpdateProductEndpoint",
+        "operationId": "AdminProducts_UpdateProductEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1622,7 +1622,7 @@
         ],
         "summary": "Deletes a product image",
         "description": "Removes an image from a product. Cannot delete the last remaining image. If deleting the main image, automatically promotes another image to main. Only accessible by administrators.",
-        "operationId": "DeleteImageEndpoint",
+        "operationId": "AdminProducts_DeleteImageEndpoint",
         "parameters": [
           {
             "name": "imageId",
@@ -1695,7 +1695,7 @@
         ],
         "summary": "Sets an image as the main product image",
         "description": "Marks a specific image as the main product image. Automatically unsets other main images for the same product. Only accessible by administrators.",
-        "operationId": "SetMainImageEndpoint",
+        "operationId": "AdminProducts_SetMainImageEndpoint",
         "parameters": [
           {
             "name": "imageId",
@@ -1765,7 +1765,7 @@
         ],
         "summary": "Retrieves all orders",
         "description": "Returns a list of all orders with customer information and order details. Only accessible by administrators.",
-        "operationId": "GetAllOrdersEndpoint",
+        "operationId": "AdminOrders_GetAllOrdersEndpoint",
         "responses": {
           "200": {
             "description": "List of orders retrieved successfully",
@@ -1814,7 +1814,7 @@
         ],
         "summary": "Retrieves order details by ID",
         "description": "Returns full order details including customer information and order items. Only accessible by administrators.",
-        "operationId": "GetOrderByIdEndpoint",
+        "operationId": "AdminOrders_GetOrderByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1884,7 +1884,7 @@
         ],
         "summary": "Updates order status",
         "description": "Changes the status of an order. Automatically sets ShippedDate when status is Shipped and DeliveredDate when status is Delivered. Only accessible by administrators.",
-        "operationId": "UpdateOrderStatusEndpoint",
+        "operationId": "AdminOrders_UpdateOrderStatusEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -1977,7 +1977,7 @@
         ],
         "summary": "Creates a new coupon code",
         "description": "Creates a new discount coupon with validation rules and usage limits. Code must be unique and contain only uppercase letters and numbers. Only accessible by administrators.",
-        "operationId": "CreateCouponEndpoint",
+        "operationId": "AdminCoupons_CreateCouponEndpoint",
         "requestBody": {
           "x-name": "CreateCouponRequest",
           "description": "",
@@ -2047,7 +2047,7 @@
         ],
         "summary": "Retrieves all coupons",
         "description": "Returns a list of all discount coupons with usage statistics. Only accessible by administrators.",
-        "operationId": "GetAllCouponsEndpoint",
+        "operationId": "AdminCoupons_GetAllCouponsEndpoint",
         "responses": {
           "200": {
             "description": "List of coupons retrieved successfully",
@@ -2096,7 +2096,7 @@
         ],
         "summary": "Disables a coupon",
         "description": "Marks a coupon as inactive, preventing it from being used. Only accessible by administrators.",
-        "operationId": "DisableCouponEndpoint",
+        "operationId": "AdminCoupons_DisableCouponEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -2166,7 +2166,7 @@
         ],
         "summary": "Enables a coupon",
         "description": "Marks a coupon as active, allowing it to be used if other conditions are met. Only accessible by administrators.",
-        "operationId": "EnableCouponEndpoint",
+        "operationId": "AdminCoupons_EnableCouponEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -2236,7 +2236,7 @@
         ],
         "summary": "Retrieves coupon details by ID",
         "description": "Returns detailed information about a specific coupon including usage statistics. Only accessible by administrators.",
-        "operationId": "GetCouponByIdEndpoint",
+        "operationId": "AdminCoupons_GetCouponByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -2304,7 +2304,7 @@
         ],
         "summary": "Updates an existing coupon",
         "description": "Updates coupon details. Coupon code cannot be changed after creation. Only accessible by administrators.",
-        "operationId": "UpdateCouponEndpoint",
+        "operationId": "AdminCoupons_UpdateCouponEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -2397,7 +2397,7 @@
         ],
         "summary": "Creates a new product category",
         "description": "Creates a new category for organizing products. Only accessible by administrators.",
-        "operationId": "CreateCategoryEndpoint",
+        "operationId": "AdminCategories_CreateCategoryEndpoint",
         "requestBody": {
           "x-name": "CreateCategoryRequest",
           "description": "",
@@ -2467,7 +2467,7 @@
         ],
         "summary": "Retrieves all product categories",
         "description": "Returns a list of all categories with product counts. Only accessible by administrators.",
-        "operationId": "GetAllCategoriesEndpoint",
+        "operationId": "AdminCategories_GetAllCategoriesEndpoint",
         "responses": {
           "200": {
             "description": "List of categories retrieved successfully",
@@ -2516,7 +2516,7 @@
         ],
         "summary": "Deletes a category",
         "description": "Permanently deletes a category if it has no associated products. Only accessible by administrators.",
-        "operationId": "DeleteCategoryEndpoint",
+        "operationId": "AdminCategories_DeleteCategoryEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -2587,7 +2587,7 @@
         ],
         "summary": "Retrieves a category by ID",
         "description": "Returns detailed information about a specific category including product count. Only accessible by administrators.",
-        "operationId": "GetCategoryByIdEndpoint",
+        "operationId": "AdminCategories_GetCategoryByIdEndpoint",
         "parameters": [
           {
             "name": "id",
@@ -2655,7 +2655,7 @@
         ],
         "summary": "Updates an existing category",
         "description": "Updates the details of a product category. Only accessible by administrators.",
-        "operationId": "UpdateCategoryEndpoint",
+        "operationId": "AdminCategories_UpdateCategoryEndpoint",
         "parameters": [
           {
             "name": "id",

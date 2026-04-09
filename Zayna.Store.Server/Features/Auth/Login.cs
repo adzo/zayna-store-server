@@ -88,7 +88,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
         var user = await _userManager.FindByEmailAsync(req.Email);
         if (user == null)
         {
-            await Send.UnauthorizedAsync(ct);
+            ThrowError("Invalid email or password", StatusCodes.Status401Unauthorized);
             return;
         }
 
@@ -96,7 +96,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
         var isPasswordValid = await _userManager.CheckPasswordAsync(user, req.Password);
         if (!isPasswordValid)
         {
-            await Send.UnauthorizedAsync(ct);
+            ThrowError("Invalid email or password", StatusCodes.Status401Unauthorized);
             return;
         }
 
