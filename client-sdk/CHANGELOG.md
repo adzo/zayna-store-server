@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/adzo/zayna-store-server/compare/v1.0.3...v1.0.4) (2026-04-09)
+
+
+### Bug Fixes
+
+* problem details ([b3cf94d](https://github.com/adzo/zayna-store-server/commit/b3cf94dec105a2116ad85c02212a67a813224fc4))
+
 ## [1.0.3](https://github.com/adzo/zayna-store-server/compare/v1.0.2...v1.0.3) (2026-04-06)
 
 
